@@ -1,0 +1,9 @@
+﻿<app-navigation-menu></app-navigation-menu>
+@if(this.authService.authSubject.value)
+{
+<app-base-user-nav-panel></app-base-user-nav-panel>
+}
+<main>
+    <router-outlet></router-outlet>
+</main>
+<footer></footer>

@@ -1,0 +1,6 @@
+@RefugeUA.WebApp.Server_HostAddress = http://localhost:5138
+
+GET {{RefugeUA.WebApp.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

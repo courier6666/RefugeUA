@@ -1,0 +1,79 @@
+﻿
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using RefugeUA.DatabaseAccess;
+using RefugeUA.WebApp.Server.Authorization.Constants;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.ComponentModel.DataAnnotations;
+using RefugeUA.WebApp.Server.Features.Announcements.Work.Common;
+using FluentValidation;
+using RefugeUA.Entities;
+using RefugeUA.WebApp.Server.Extensions.Mapping;
+
+namespace RefugeUA.WebApp.Server.Features.Announcements.Work.Edit
+{
+    public class EditWorkAnnouncement : IFeatureEndpoint
+    {
+        public static async Task<IResult> EditWorkAnnouncementAsync(
+            [FromRoute] long id,
+            [FromBody] EditOrCreateWorkAnnouncementCommand command,
+            [FromServices] RefugeUADbContext dbContext,
+            [FromServices] IHttpContextAccessor httpContextAccessor,
+            [FromServices] IAuthorizationService authService,
+            [FromServices] IValidator<EditOrCreateWorkAnnouncementCommand> validator)
+        {
+            var foundAnnouncement = await dbContext.WorkAnnouncements
+                .Include(x => x.Address)
+                .Include(x => x.ContactInformation)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (foundAnnouncement == null)
+            {
+                return Results.NotFound();
+            }
+
+            if (!(await authService.AuthorizeAsync(
+                httpContextAccessor.HttpContext!.User,
+                WorkAnnouncementMapping.Func(foundAnnouncement),
+                Policies.EditDeleteAnnouncementPolicy)).Succeeded)
+            {
+                return Results.Forbid();
+            }
+
+            var validationResult = await validator.ValidateAsync(command);
+            if (!validationResult.IsValid)
+            {
+                return Results.ValidationProblem(validationResult.ToDictionary());
+            }
+
+            foundAnnouncement.Title = command.Title;
+            foundAnnouncement.Content = command.Content;
+            foundAnnouncement.JobPosition = command.JobPosition;
+            foundAnnouncement.CompanyName = command.CompanyName;
+            foundAnnouncement.SalaryLower = command.SalaryLower;
+            foundAnnouncement.SalaryUpper = command.SalaryUpper;
+            foundAnnouncement.RequirementsContent = command.RequirementsContent;
+            foundAnnouncement.WorkCategoryId = command.WorkCategoryId;
+            foundAnnouncement.NonAcceptenceReason = null;
+            command.Address.MapToExistingEntityFull(foundAnnouncement.Address);
+            command.ContactInformation.MapToExistingEntityFull(foundAnnouncement.ContactInformation);
+
+            dbContext.Update(foundAnnouncement);
+            await dbContext.SaveChangesAsync();
+            return Results.NoContent();
+        }
+
+        public void AddEndpoint(IEndpointRouteBuilder app)
+        {
+            app.MapPut("api/announcements/work/{id:long}", EditWorkAnnouncementAsync)
+                .Produces(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status403Forbidden)
+                .Produces(StatusCodes.Status401Unauthorized)
+                .Produces(StatusCodes.Status404NotFound)
+                .WithName("EditWorkAnnouncement")
+                .WithTags("Announcements")
+                .RequireAuthorization();
+        }
+    }
+}

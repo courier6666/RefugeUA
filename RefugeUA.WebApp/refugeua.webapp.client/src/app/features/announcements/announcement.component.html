@@ -1,0 +1,29 @@
+<div class="pb-4 bg-custom-much-darker mt-0">
+    <div class="announcements-navigation container pt-4" id="announcements">
+        <h2>Категорії</h2>
+        <div class="row g-4 announcements-navigation">
+            <div class="col-md-4">
+                <a #accomodationNav class="btn btn-custom border-custom-light w-100" routerLink="accomodation"
+                    (click)="onAnnouncementNavButtonToggle($event)">
+                    <i class="fa-solid fa-house"></i> Житло
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a #educationNav class="btn btn-custom border-custom-light w-100" id="education-nav"
+                    routerLink="education" (click)="onAnnouncementNavButtonToggle($event)">
+                    <i class="fa-solid fa-book"></i> Освіта
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a #workNav class="btn btn-custom border-custom-light w-100" id="work-nav" routerLink="work"
+                    (click)="onAnnouncementNavButtonToggle($event)">
+                    <i class="fa-solid fa-briefcase"></i> Робота
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="container">
+    <router-outlet></router-outlet>
+</div>

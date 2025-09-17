@@ -1,0 +1,167 @@
+<div class="container my-5">
+    <div class="mx-auto mw-50" style="max-width: 700px;">
+        <h3 class="text-center"> @if(this.currentRoute == "create"){
+            Створити контакт спеціаліста
+            }
+            @else {
+            Редагувати контакт спеціаліста
+            }
+        </h3>
+        @if((this.isLoaded && !this.isLoadingFailed) || this.currentRoute == "create")
+        {
+        <form [formGroup]="specialistsInfoForm" class="d-flex flex-column w-100" (ngSubmit)="this.onSubmit()">
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="title">Заголовок *</label>
+                <input id="title" type="text" class="form-control" placeholder="Заголовок" formControlName="title" />
+                @if(title?.touched && title?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="title?.errors?.['required']" class="text-custom-light-red">Загаловок є
+                        обов’язковим.</div>
+                    <div *ngIf="title?.errors?.['maxlength']" class="text-custom-light-red">Заголовок не може
+                        бути довшим
+                        за 200
+                        символів.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="content">Опис *</label>
+                <textarea id="content" class="form-control" placeholder="Опис" formControlName="content"></textarea>
+                @if(content?.touched && content?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="content?.errors?.['required']" class="text-custom-light-red">Опис є
+                        обов’язковим.</div>
+                    <div *ngIf="content?.errors?.['maxlength']" class="text-custom-light-red">Опис не може
+                        бути довшим
+                        за 1024
+                        символів.</div>
+                </div>
+                }
+            </div>
+            <div formGroupName="contactInformation">
+                <h4 class="pt-4">Контактна інформація</h4>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="phoneNumber">Номер телефону *</label>
+                    <input id="phoneNumber" type="tel" class="form-control" formControlName="phoneNumber"
+                        placeholder="+380..." />
+                    @if(phoneNumber?.touched && phoneNumber?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="phoneNumber?.errors?.['required']" class="text-custom-light-red">Номер телефону є
+                            обов’язковим.
+                        </div>
+                        <div *ngIf="phoneNumber?.errors?.['pattern']" class="text-custom-light-red">Номер телефону не
+                            віповідає правильному формату.
+                            Може починатися з +, або без нього.
+                            Перша цифра після + не може бути нулем.
+                            Має містити від 11 до 15 цифр.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="email">Електронна пошта</label>
+                    <input id="email" type="email" class="form-control" formControlName="email"
+                        placeholder="example@domain.com" />
+                    @if(email?.touched && email?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="email?.errors?.['email']" class="text-custom-light-red">Електронна пошта має
+                            відповідати
+                            відповідному формату пошти: example&#64;email.com</div>
+                        <div *ngIf="email?.errors?.['maxlength']" class="text-custom-light-red">Електронна пошта не може
+                            бути довшою
+                            за 200
+                            символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="telegram">Telegram</label>
+                    <input id="telegram" type="telegram" class="form-control" formControlName="telegram"
+                        placeholder="Telegram" />
+                    @if(telegram?.touched && telegram?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="telegram?.errors?.['maxlength']" class="text-custom-light-red">Посилання на телеграм
+                            не може перевищувати 256 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="viber">Viber</label>
+                    <input id="viber" type="viber" class="form-control" formControlName="viber" placeholder="Viber" />
+                    @if(viber?.touched && viber?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="viber?.errors?.['maxlength']" class="text-custom-light-red">Посилання на вайбер
+                            не може перевищувати 256 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="facebook">Facebook</label>
+                    <input id="facebook" type="facebook" class="form-control" formControlName="facebook"
+                        placeholder="Facebook" />
+                    @if(facebook?.touched && facebook?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="facebook?.errors?.['maxlength']" class="text-custom-light-red">Посилання на фейсбук
+                            не може перевищувати 256 символів.</div>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            @if(this.isFormSubmitted)
+            {
+            @if(resultSuccess == null) {
+            <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+            }
+            @else if(!resultSuccess) {
+            <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal form-error-display">
+                <div class="text-start fs-5"> Виникла помилка під час {{(this.currentRoute == "create") ? "створення" :
+                    "редагування"}} контакту
+                    спеціаліста.</div>
+                @for (item of this.submitErrorResult; track $index)
+                {
+                <div class="text-start">{{item}}</div>
+                }
+            </div>
+            }
+            @else {
+            <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal form-success-display">
+                Контакт спеціаліста {{(this.currentRoute == "create") ? "створений" : "редагований"}}.
+            </div>
+            }
+            }
+
+            <div class="d-flex justify-content-between mt-4 gap-2 w-100">
+                <button class="btn btn-custom-green w-100" type="submit"
+                    [disabled]="specialistsInfoForm.invalid || specialistsInfoForm.pending  || (this.isFormSubmitted && this.resultSuccess == null)">
+                    @if(this.currentRoute == "create")
+                    {
+                    Створити
+                    }
+                    @else {
+                    Редагувати
+                    }
+                </button>
+                <button class="btn btn-custom-danger w-100" type="button" (click)="this.onCancel()">Скасувати</button>
+            </div>
+        </form>
+        }
+        @else if(this.isLoadingFailed)
+        {
+        <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal fs-4 form-success-display">
+            Контакт спеціаліста не було знайдено або виникла помилка під час завантаження форми!
+        </div>
+        }
+        @else {
+        <img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+        }
+    </div>
+</div>

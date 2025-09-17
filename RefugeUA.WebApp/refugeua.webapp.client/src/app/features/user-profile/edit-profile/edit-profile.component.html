@@ -1,0 +1,181 @@
+<div class="container my-5">
+    <div class="mx-auto mw-50" style="max-width: 400px;">
+        <h3 class="text-center">Редагування профілю</h3>
+        @if(this.profileLoadedStatus)
+        {
+        <form [formGroup]="editProfileForm" class="d-flex flex-column w-100" (ngSubmit)="onSubmit()">
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="firstName">Імʼя *</label>
+                <input id="firstName" type="text" class="form-control" placeholder="Імʼя" formControlName="firstName" />
+                @if(firstName?.touched && firstName?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="firstName?.errors?.['required']" class="text-custom-light-red">Ім’я є обов’язковим.
+                    </div>
+                    <div *ngIf="firstName?.errors?.['maxlength']" class="text-custom-light-red">Ім’я не може бути довшим
+                        за 100
+                        символів.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="lastName">Прізвище *</label>
+                <input id="lastName" type="text" class="form-control" placeholder="Прізвище"
+                    formControlName="lastName" />
+                @if(lastName?.touched && lastName?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="lastName?.errors?.['required']" class="text-custom-light-red">Прізвище є обов’язковим.
+                    </div>
+                    <div *ngIf="lastName?.errors?.['maxlength']" class="text-custom-light-red">Прізвище не може бути
+                        довшим за
+                        100
+                        символів.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="dateOfBirth">Дата народження *</label>
+                <input id="dateOfBirth" type="date" class="form-control" formControlName="dateOfBirth"
+                    [max]="this.maxDateForBirthday.toISOString().split('T')[0]" min="1920-01-01"/>
+                @if(dateOfBirth?.touched && (dateOfBirth?.value == null || dateOfBirth?.errors))
+                {
+                <div class="form-error-display">
+                    <div *ngIf="dateOfBirth?.value == null || dateOfBirth?.errors?.['required']"
+                        class="text-custom-light-red">
+                        Статус є
+                        обов’язковим.</div>
+                    <div *ngIf="dateOfBirth?.errors?.['dateNotInPast']" class="text-custom-light-red">
+                        Дата повинна бути в минулому.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="phoneNumber">Номер телефону *</label>
+                <input id="phoneNumber" type="tel" class="form-control" placeholder="+380..."
+                    formControlName="phoneNumber" />
+                @if(phoneNumber?.touched && phoneNumber?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="phoneNumber?.errors?.['phoneNumberShouldNotExist']" class="text-custom-light-red">Цей
+                        номер
+                        телефону вже використовується.</div>
+                    <div *ngIf="phoneNumber?.errors?.['required']" class="text-custom-light-red">Номер телефону є
+                        обов’язковим.
+                    </div>
+                    <div *ngIf="phoneNumber?.errors?.['pattern']" class="text-custom-light-red">Номер телефону не
+                        віповідає
+                        правильному формату.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="district">
+                    @if(this.authService.userClaims.role == this.Roles.CommunityAdmin)
+                    {
+                    Громада *
+                    }
+                    @else {
+                    Громада
+                    }
+                </label>
+                <input id="district" type="text" class="form-control" formControlName="district"
+                    placeholder="Громада" />
+                @if(district?.touched && district?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="district?.errors?.['required']" class="text-custom-light-red">Громада є
+                        обов’язковою для адміністратора громади.
+                    </div>
+                    <div *ngIf="district?.errors?.['maxlength']" class="text-custom-light-red">Назва громади
+                        не може перевищувати 200 символів.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="picture">
+                    Фото профілю
+                </label>
+                <input #picture type="file" accept="image/jpeg, image/jpg" class="form-control"
+                    formControlName="profilePicture" (change)="this.onFileSelected($event)" placeholder="Фото профілю"
+                    hidden />
+                <button class="w-100 btn btn-custom" type="button"
+                    (click)="this.pictureElement.nativeElement.click()">Вибрати файл</button>
+                @if(profilePicture?.touched && profilePicture?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="profilePicture?.errors?.['errorLoading']" class="text-custom-light-red">
+                        Виникла помилка завантаження зображення.
+                    </div>
+                    <div *ngIf="profilePicture?.errors?.['wrongFormat']" class="text-custom-light-red">
+                        Фото профілю повинна бути у форматі .jpg або .jpeg.
+                    </div>
+                    <div *ngIf="profilePicture?.errors?.['imageSizeExceed']" class="text-custom-light-red">
+                        Розмір фото профілю не має перевищувати 2 мегабайти.
+                    </div>
+                    <div *ngIf="profilePicture?.errors?.['aspectRatioOutOfRange']" class="text-custom-light-red">
+                        Дозволене відношення ширини до висоти фото є між 3/4 та 16/9.
+                    </div>
+                    <div *ngIf="profilePicture?.errors?.['imageResolution']" class="text-custom-light-red">
+                        Розмір зображення повинне бути хоча би 200x200 пікселів.
+                    </div>
+                </div>
+                }
+
+                @if(this.profileImageFile)
+                {
+                <div class="mt-2">
+                    <div class="text-center">
+                        <img [src]="this.profileImageSrc" height="200px" class="mx-auto img-border" />
+                    </div>
+                    <div class="text-center">
+                        <span class="badge group-tag-item-added fs-6">{{this.profileImageFile.name}} <i
+                                class="fa-solid fa-xmark rounded-circle px-1 remove-image-button"
+                                (click)="this.onImageRemove()"></i></span>
+                    </div>
+                </div>
+                }
+            </div>
+
+            @if(this.isFormSubmitted)
+            {
+            @if(resultSuccess == null) {
+            <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+            }
+            @else if(!resultSuccess) {
+            <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal form-error-display">
+                Виникла помилка під час редагування профілю.
+            </div>
+            }
+            @else {
+            <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal form-success-display">
+                Редагування пройшло успішно
+            </div>
+            }
+            }
+
+            <div class="d-flex justify-content-between mt-4 gap-2 w-100">
+                <button class="btn btn-custom-green w-100" type="submit"
+                    [disabled]="editProfileForm.pending || editProfileForm.invalid || (this.isFormSubmitted && this.resultSuccess == null)">Редагувати</button>
+                <button class="btn btn-custom-danger w-100" type="button" (click)="onCancel()">Скасувати</button>
+            </div>
+
+        </form>
+        }
+        @else if(!this.profileLoadedStatus && this.profileLoadedStatus != undefined)
+        {
+        <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal fs-4 form-success-display">
+            Виникла помлика завантаження форми для редагування профілю.
+        </div>
+        }
+        @else {
+        <img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+        }
+    </div>
+</div>

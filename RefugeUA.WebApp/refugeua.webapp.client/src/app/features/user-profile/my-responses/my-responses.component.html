@@ -1,0 +1,47 @@
+<h3 class="text-custom-pale-yellow pb-3"><strong>Мої відгуки на оголошення</strong></h3>
+<div class="container mt-4">
+    <div class="row justify-content-md-center mb-4">
+        <div class="col-md-8">
+            <app-search-bar class="mb-4" placeholder="Заголовок оголошення..."
+                [onSearchBarSearch]="this.getOnSearchBarCallback()"></app-search-bar>
+        </div>
+    </div>
+</div>
+<div class="d-flex flex-column gap-4 mt-1">
+    @if(this.responsesLoaded)
+    {
+    @if(!this.responsesFound)
+    {
+    <span class="error-display">Не було знайдено відгуків!</span>
+    }
+    @else {
+    @for (response of this.responses; track $index) {
+    <div class="card w-75 m-auto">
+        <div class="card-header mx-2 d-flex justify-content-between">
+            <div class="py-2">
+                <h3>{{response.user?.firstName}} {{response.user?.lastName}}</h3>
+                <h4>Оголошення: '{{response.announcement?.title}}'</h4>
+                <h5>Дата відгуку: {{response.createdAt | date: 'longDate' }}</h5>
+                <a class="btn btn-custom" [routerLink]="this.getRouterLinkAnnouncement(response.announcement!)">
+                    <i class="fa-solid fa-eye"></i>
+                    Переглянути оголошення
+                </a>
+            </div>
+        </div>
+        <div class="mx-4 card-header-underline"></div>
+        <div class="card-body m-2">
+            <app-contact-information [contactInformation]="response.contactInformation!"></app-contact-information>
+        </div>
+    </div>
+    }
+    <div class="m-5">
+        <app-paging-navigation [currentPage]="this.currentPage" [pagesCount]="this.pages"
+            [onNavigationCallback]="this.getNavigationCallback"></app-paging-navigation>
+    </div>
+    }
+    }
+    @else {
+    <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+    }
+
+</div>

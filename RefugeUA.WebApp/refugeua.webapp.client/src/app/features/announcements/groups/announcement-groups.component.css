@@ -1,0 +1,47 @@
+.scroll-groups-panel {
+  overflow-y: auto;
+  height: 100%;
+}
+
+@keyframes shadowPulse {
+  0% {
+    box-shadow: 0 0 10px var(--val-saturated-blue);
+  }
+
+  50% {
+    box-shadow: 0 0 40px var(--val-saturated-blue);
+  }
+
+  100% {
+    box-shadow: 0 0 10px var(--val-saturated-blue);
+  }
+}
+
+.group-tag-item {
+  color: var(--val-yellow) !important;
+  background-color: var(--val-dark);
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.group-tag-remove-button {
+  background-color: var(--val-lightest);
+  color: var(--val-darkest);
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.group-tag-remove-button:hover {
+  cursor: pointer;
+  background-color: var(--val-yellow);
+  color: var(--val-much-darker);
+}
+
+.group-tag-item-added {
+  color: var(--val-yellow) !important;
+  background-color: var(--val-dark);
+}
+
+.group-tag-item:hover {
+  cursor: pointer;
+  color: var(--val-darkest) !important;
+  background-color: var(--val-lightest);
+}

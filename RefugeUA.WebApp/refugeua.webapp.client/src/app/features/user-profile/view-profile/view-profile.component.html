@@ -1,0 +1,13 @@
+@if(this.userLoadedSuccess == undefined)
+{
+<img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+}
+@else if(this.userLoadedSuccess)
+{
+<app-profile [user]="this.user" [viewFromMyProfile]="false"></app-profile>
+}
+@else{
+<div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal form-error-display">
+    Виникла помилка під час завантаження профілю спробуйте ще раз.
+</div>
+}

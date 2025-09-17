@@ -1,0 +1,72 @@
+<div class="card" (click)="this.onPreviewClick()">
+  <div class="card-header m-2 mb-0 d-flex justify-content-between">
+    <div class="py-2">
+      <h5 class="card-title text-custom-pale-yellow">{{ workAnnouncement?.title }}</h5>
+      <h6 class="card-subtitle text-muted text-custom-pale-yellow">
+        {{ workAnnouncement?.jobPosition }}
+        <span *ngIf="workAnnouncement?.companyName" class="text-custom-pale-yellow">, <strong>{{
+            workAnnouncement?.companyName }}</strong></span>
+      </h6>
+    </div>
+    <div class="py-2">
+      <span class="badge float-end bg-custom-dark text-custom-yellow">
+        {{ workAnnouncement?.workCategory?.name }}
+      </span>
+    </div>
+  </div>
+  <div class="ms-4 pt-0 pb-2">
+    @if(!this.workAnnouncement?.isClosed)
+    {
+    <span class="badge float-start bg-custom-pale-green text-custom-lightest mt-0 fs-5">
+      Відкрите
+    </span>
+    }
+    @else {
+    <span class="badge float-start bg-custom-dark-red text-custom-light-red mt-0 fs-5">
+      Закрите
+    </span>
+    }
+  </div>
+  <div class="mx-4 card-header-underline"></div>
+  <div class="card-body m-2">
+    <p class="card-text">{{ shortContent }}</p>
+
+    <div *ngIf="workAnnouncement?.salaryLower || workAnnouncement?.salaryUpper">
+      <strong>Зарплата:</strong>
+      <span>
+        {{
+        workAnnouncement?.salaryLower && workAnnouncement?.salaryUpper
+        ? (workAnnouncement?.salaryLower + ' - ' + workAnnouncement?.salaryUpper)
+        : (workAnnouncement?.salaryLower || workAnnouncement?.salaryUpper)
+        }} UAH
+      </span>
+    </div>
+
+    @if(this.workAnnouncement?.address != null)
+    {
+    <div class="mt-3">
+      <strong>Адреса:</strong>
+      <app-address [address]="this.workAnnouncement?.address"></app-address>
+    </div>
+    }
+
+    <div class="mt-3">
+      <p class="mb-1">Дата розміщення: {{ workAnnouncement?.createdAt | date: 'mediumDate' }}</p>
+    </div>
+
+    @if(this.workAnnouncement?.announcementGroups && this.workAnnouncement?.announcementGroups!.length >
+    0)
+    {
+    <div class="mt-3 card-header-underline"></div>
+    <div class="mt-3 d-flex justify-content-start flex-wrap flex-row gap-2">
+      @for (item of this.workAnnouncement?.announcementGroups; track $index) {
+      <div>
+        <span class="badge float-end bg-custom-dark text-custom-yellow">
+          {{ item.name }}
+        </span>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

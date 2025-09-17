@@ -1,0 +1,34 @@
+<div class="d-flex flex-row gap-1 justify-content-center">
+    @if(this.currentPage > 1) {
+    <button class="btn btn-custom paging-arrow-button" (click)="this.onNavigationCallback(this.currentPage - 1)">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    }
+
+    @if(this.currentPage == 1)
+    {
+    <button class="btn btn-custom-active">1</button>
+    }
+    @else{
+    <button class="btn btn-custom" (click)="this.onNavigationCallback(1)">1</button>
+    }
+
+    @for (page of this.pages.slice(1); track $index) {
+    @if(this.pages[$index + 1] - this.pages[$index] > 1)
+    {
+    <span class="pagination-gap">...</span>
+    }
+    @if(this.currentPage == page)
+    {
+    <button class="btn btn-custom-active">{{page}}</button>
+    }
+    @else{
+    <button class="btn btn-custom" (click)="this.onNavigationCallback(page)">{{page}}</button>
+    }
+    }
+    @if(this.currentPage < this.pagesCount) { <button class="btn paging-arrow-button"
+        (click)="this.onNavigationCallback(this.currentPage + 1)">
+        <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        }
+</div>

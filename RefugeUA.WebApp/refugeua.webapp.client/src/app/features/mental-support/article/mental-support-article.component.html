@@ -1,0 +1,36 @@
+<div class="row m-2">
+    <app-search-bar class="mb-4" placeholder="Заголовок..."
+        [onSearchBarSearch]="this.getOnSearchBarCallback()"></app-search-bar>
+    @if(this.authService.isCommunityAdminSubject.value || this.authService.isAdminSubject.value)
+    {
+    <div class="mb-4">
+        <a routerLink="create" class="btn btn-custom-green"><strong>Створити статтю</strong></a>
+    </div>
+    }
+    <div class="col-12 mt-1 gap-4 d-flex flex-column">
+        @if(this.dataLoaded)
+        {
+        @if(!this.dataFound)
+        {
+        <span class="error-display">Не було знайдено статей!</span>
+        }
+        @else {
+        <div class="row">
+            @for (item of this.currentArticles; track $index) {
+            @if($index % 3 == 0 && $index != 0)
+            {
+            <div class="w-100 pt-3 pb-2"></div>
+            }
+            <app-mental-support-article-preview class="col-4"
+                [mentalSupportArticle]="item"></app-mental-support-article-preview>
+            }
+        </div>
+        <app-paging-navigation [pagesCount]="this.pages" [onNavigationCallback]="getNavigationCallback()"
+            [currentPage]="this.currentPage"></app-paging-navigation>
+        }
+        }
+        @else {
+        <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+        }
+    </div>
+</div>

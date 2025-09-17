@@ -1,0 +1,33 @@
+<div class="row m-2 justify-content-md-center">
+    <div class="col-md-9 d-flex flex-column gap-4 mt-1 ">
+        <app-search-bar placeholder="Заголовок..." [onSearchBarSearch]="this.getOnSearchBarCallback()"></app-search-bar>
+        @if(this.authService.authSubject.value &&
+            (this.authService.userClaims.role == Roles.Admin ||
+             this.authService.userClaims.role == Roles.CommunityAdmin ||
+             this.authService.userClaims.role == Roles.Volunteer))
+        {
+        <div class="mb-4">
+            <a routerLink="create" class="btn btn-custom-green"><strong>Створити волонтерську групу</strong></a>
+        </div>
+        }
+    </div>
+    <div class="col-md-9 d-flex flex-column gap-4 mt-4">
+        @if(this.dataLoaded)
+        {
+        @if(!this.dataFound)
+        {
+        <span class="error-display">Не було знайдено волонтерські групи!</span>
+        }
+        @else {
+        @for (item of this.currentVolunteerGroups; track $index) {
+        <app-volunteer-group-preview [volunteerGroup]="item"></app-volunteer-group-preview>
+        }
+        <app-paging-navigation [pagesCount]="this.pages" [onNavigationCallback]="getNavigationCallback()"
+            [currentPage]="this.currentPage"></app-paging-navigation>
+        }
+        }
+        @else {
+        <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+        }
+    </div>
+</div>

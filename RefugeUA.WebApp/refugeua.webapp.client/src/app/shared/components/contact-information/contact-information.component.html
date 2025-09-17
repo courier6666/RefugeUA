@@ -1,0 +1,22 @@
+<h3 class="text-start text-custom-pale-yellow">Контакти</h3>
+<div class="pb-4 text-start ms-4">
+    <ul class="list-unstyled">
+        <li class="lh-lg fw-normal text-start fs-5"><i class="fa-solid fa-phone"></i> Номер телефону: {{this.contactInformation.phoneNumber}}</li>
+        @if(this.contactInformation.email)
+        {
+        <li class="lh-lg fw-normal text-start fs-5"><i class="fa-solid fa-envelope"></i> Електронна пошта: {{this.contactInformation.email}}</li>
+        }
+        @if(this.contactInformation.telegram)
+        {
+        <li class="lh-lg fw-normal text-start fs-5"><i class="fa-brands fa-telegram"></i> Telegram: {{this.contactInformation.telegram}}</li>
+        }
+        @if(this.contactInformation.viber)
+        {
+        <li class="lh-lg fw-normal text-start fs-5"><i class="fa-brands fa-viber"></i> Viber: {{this.contactInformation.viber}}</li>
+        }
+        @if(this.contactInformation.facebook)
+        {
+        <li class="lh-lg fw-normal text-start fs-5"><i class="fa-brands fa-facebook"></i> Facebook: {{this.contactInformation.facebook}}</li>
+        }
+    </ul>
+</div>

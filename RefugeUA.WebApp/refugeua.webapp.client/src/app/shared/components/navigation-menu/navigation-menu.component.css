@@ -1,0 +1,27 @@
+.refuge-ua-logo {
+    max-width: 15em;
+}
+
+.nav-link {
+    transition: transform 0.2s ease;
+}
+
+.nav-link:hover {
+    transform: scale(1.05);
+}
+
+header {
+    transition: top 0.25s;
+    z-index: 100;
+}
+
+.navbar {
+    color: var(--val-lightest);
+    background-color: var(--val-darkest);
+    border-color: var(--val-lightest);
+}
+
+
+.auth-panel {
+    width: 15%;
+}

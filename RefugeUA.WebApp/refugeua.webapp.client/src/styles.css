@@ -1,0 +1,361 @@
+:root {
+    --val-darkest: #0D1321;
+    --val-much-darker: #151E2D;
+    --val-darker: #1D2D44;
+    --val-dark: #3E5C76;
+    --val-light: #748CAB;
+    --val-lightest: #F0EBD8;
+    --val-yellow: #FFBB00;
+    --val-pale-yellow: #FFDB98;
+    --val-dark-red: #592828;
+    --val-light-red: #E58F8F;
+    --val-saturated-blue: #00318C;
+    --val-pale-green: #079B67;
+    --val-acid-green: #21D870;
+    --val-saturated-light-blue: #2746AD;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--val-darkest) !important;
+    color: var(--val-lightest) !important;
+    border-color: var(--val-lightest) !important;
+}
+
+.img-border {
+    box-shadow: 0px 1px 10px 0px var(--val-saturated-blue);
+    border-color: var(--val-lightest);
+    border-width: 2px;
+}
+
+.remove-image-button:hover {
+    background-color: var(--val-lightest);
+    color: var(--val-darkest);
+    cursor: pointer;
+}
+
+.btn,
+.form-control,
+.card,
+.dropdown-menu {
+    color: var(--val-lightest) !important;
+    background-color: var(--val-darker) !important;
+    border-color: var(--val-light) !important;
+}
+
+.custom-checkbox-container {
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 0;
+}
+
+.checkbox-label {
+    margin-left: 25px;
+}
+
+.custom-checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    
+}
+
+.custom-checkbox {
+    position: absolute;
+    top: 3px;
+    left: 0px;
+    height: 20px;
+    width: 20px;
+    background-color: var(--val-darker);
+    border-color: var(--val-light);
+    border-width: 1px;
+    border-radius: 3px;
+    border-style: solid;
+}
+
+.custom-checkbox:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.custom-checkbox-container:hover input~.custom-checkbox {
+    border-color: var(--val-lightest);
+}
+
+.custom-checkbox-container input:checked~.custom-checkbox {
+    background-color: var(--val-lightest);
+    border-color: var(--val-lightest);
+}
+
+.custom-checkbox-container input:checked~.custom-checkbox:after {
+    display: block;
+}
+
+.custom-checkbox-container .custom-checkbox::after {
+    left: 7px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--val-darkest);
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.nav-link {
+    color: var(--val-lightest);
+    background-color: var(--val-dark);
+    border-color: var(--val-light);
+}
+
+.navbar a,
+.navbar-brand,
+.navbar-nav .nav-link {
+    color: var(--val-lightest) !important;
+}
+
+input,
+textarea,
+select {
+    background-color: var(--val-dark) !important;
+    color: var(--val-lightest) !important;
+    border: 1px solid var(--val-lightest) !important;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.bg-custom-darkest {
+    background-color: var(--val-darkest) !important;
+}
+
+.bg-custom-dark {
+    background-color: var(--val-dark) !important;
+}
+
+.bg-custom-darker {
+    background-color: var(--val-darker) !important;
+}
+
+.bg-custom-light {
+    background-color: var(--val-light) !important;
+}
+
+.bg-custom-lightest {
+    background-color: var(--val-lightest) !important;
+}
+
+.bg-custom-dark-red {
+    background-color: var(--val-dark-red) !important;
+}
+
+.bg-custom-much-darker {
+    background-color: var(--val-much-darker) !important;
+}
+
+.bg-custom-green {
+    background-color: var(--val-acid-green) !important;
+}
+
+.bg-custom-pale-green {
+    background-color: var(--val-pale-green) !important;
+}
+
+.text-custom-darkest {
+    color: var(--val-darkest) !important;
+}
+
+.text-custom-darker {
+    color: var(--val-darker) !important;
+}
+
+.text-custom-dark {
+    color: var(--val-dark) !important;
+}
+
+.text-custom-light {
+    color: var(--val-light) !important;
+}
+
+.text-custom-lightest {
+    color: var(--val-lightest) !important;
+}
+
+.text-custom-yellow {
+    color: var(--val-yellow) !important;
+}
+
+.user-deleted-display {
+    background-color: var(--val-dark-red) !important;
+    color: var(--val-light-red) !important;
+    border-radius: 1rem;
+    padding: 0.5rem;
+}
+
+.error-display {
+    background-color: var(--val-dark-red) !important;
+    color: var(--val-light-red) !important;
+    border-radius: 1rem;
+    display: inline-block;
+    padding: 0.5rem;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text-custom-pale-yellow {
+    color: var(--val-pale-yellow) !important;
+}
+
+.text-custom-light-red {
+    color: var(--val-light-red) !important;
+}
+
+h1.text-custom-pale-yellow,
+h2.text-custom-pale-yellow,
+h3.text-custom-pale-yellow,
+h4.text-custom-pale-yellow,
+h5.text-custom-pale-yellow,
+h6.text-custom-pale-yellow,
+.card-title.text-custom-pale-yellow,
+.card-subtitle.text-custom-pale-yellow,
+small.text-custom-pale-yellow,
+span.text-custom-pale-yellow {
+    color: var(--val-pale-yellow) !important;
+}
+
+.btn-custom {
+    background-color: var(--val-dark) !important;
+    color: var(--val-lightest) !important;
+    border: 1px solid var(--val-lightest) !important;
+}
+
+.border-custom-light {
+    border: 1px solid var(--val-light) !important;
+}
+
+.btn-custom:hover {
+    background-color: var(--val-light) !important;
+    color: var(--val-darkest) !important;
+}
+
+.btn-custom-active {
+    background-color: var(--val-lightest) !important;
+    color: var(--val-darkest) !important;
+}
+
+.btn-custom-green {
+    background-color: var(--val-pale-green) !important;
+    color: var(--val-lightest) !important;
+    border: 1px solid var(--val-lightest) !important;
+}
+
+.btn-custom-green:hover {
+    background-color: var(--val-acid-green) !important;
+    color: var(--val-saturated-light-blue) !important;
+    border: 1px solid var(--val-lightest) !important;
+}
+
+.btn-custom-danger {
+    background-color: var(--val-dark-red) !important;
+    color: var(--val-light-red) !important;
+    border: 1px solid var(--val-lightest) !important;
+}
+
+.btn-custom-danger:hover {
+    background-color: var(--val-light-red) !important;
+    color: var(--val-dark-red) !important;
+    border: 1px solid var(--val-lightest) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.card-title,
+.card-subtitle,
+small,
+span {
+    color: var(--val-lightest) !important;
+}
+
+.option-nav-label {
+    width: 10%;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--val-light) !important;
+}
+
+
+.card {
+    border-width: 2px;
+    border-color: var(--val-lightest);
+    box-shadow: 0px 1px 3px 0px var(--val-saturated-blue);
+    transition: box-shadow 0.2s ease;
+    text-align: left;
+    border-radius: 1.1rem;
+}
+
+.card-header {
+    border: none;
+}
+
+.card-header-underline {
+    border-bottom: 1px solid var(--val-light);
+}
+
+.card:hover {
+    box-shadow: 0px 1px 14px 0px var(--val-saturated-blue);
+    cursor: pointer;
+}
+
+.form-error-display {
+    background-color: var(--val-dark-red);
+    margin-top: 0.5rem;
+    border-radius: 0.3rem;
+}
+
+.form-error-display>div {
+    padding: 0.5rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
+.form-success-display {
+    background-color: var(--val-pale-green);
+    margin-top: 0.5rem;
+    border-radius: 0.3rem;
+}
+
+.form-success-display>div {
+    padding: 0.5rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
+.dropdown-list-item:hover {
+    color: var(--val-darkest);
+    background-color: var(--val-lightest);
+}
+
+table,
+th,
+td {
+    border: 0.1rem solid;
+    border-color: var(--val-darker);
+}

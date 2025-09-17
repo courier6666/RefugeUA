@@ -1,0 +1,11 @@
+@for(item of this.requirements; track $index){
+@if(item.heading && item.heading != '')
+{
+<h4 class="text-start">{{item.heading}}</h4>
+}
+<ul class="{{this.listClass}}">
+    @for (req of item.requirements; track $index) {
+    <li class="{{this.listItemClass}}">{{req}}</li>
+    }
+</ul>
+}

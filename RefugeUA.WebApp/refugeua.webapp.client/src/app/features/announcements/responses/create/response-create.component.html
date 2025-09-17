@@ -1,0 +1,58 @@
+<div class="container my-5" id="contactForm">
+    <div class="mx-auto">
+        <h3 class="text-center">Відгук</h3>
+        @if(this.isResponseCreatedForUser == undefined)
+        {
+        <img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+        }
+        @else if(!this.isResponseCreatedForUser)
+        {
+        <form [formGroup]="contactForm" class="d-flex flex-column w-100" (ngSubmit)="this.onResponseSubmit()">
+            <div class="d-flex gap-5">
+                <div class="form-group mt-3 text-start w-100">
+                    <label class="h5" for="phoneNumber">Номер телефону</label>
+                    <input id="phoneNumber" type="tel" class="form-control" placeholder="+380..."
+                        formControlName="phoneNumber" required />
+                </div>
+
+                <div class="form-group mt-3 text-start w-100">
+                    <label class="h5" for="email">Електронна пошта</label>
+                    <input id="email" type="email" class="form-control" placeholder="example@email.com"
+                        formControlName="email" />
+                </div>
+            </div>
+            <div class="d-flex gap-5">
+                <div class="form-group mt-3 text-start w-100">
+                    <label class="h5" for="telegram">Telegram</label>
+                    <input id="telegram" type="text" class="form-control" placeholder="@username"
+                        formControlName="telegram" />
+                </div>
+
+                <div class="form-group mt-3 text-start w-100">
+                    <label class="h5" for="viber">Viber</label>
+                    <input id="viber" type="text" class="form-control" placeholder="Viber контакт"
+                        formControlName="viber" />
+                </div>
+            </div>
+
+            <div class="d-flex gap-5">
+                <div class="form-group mt-3 text-start w-50">
+                    <label class="h5" for="facebook">Facebook</label>
+                    <input id="facebook" type="text" class="form-control" placeholder="Facebook профіль"
+                        formControlName="facebook" />
+                </div>
+                <div class="w-50 mt-5">
+                    <button class="btn btn-custom-green w-100" type="submit" [disabled]="contactForm.invalid || contactForm.pending"><b>Лишити
+                            відгук</b></button>
+                </div>
+            </div>
+        </form>
+        }
+        @else {
+        <button class="btn btn-custom-danger" (click)="this.onResponseRemove()">
+            <i class="fa-solid fa-x"></i>
+            Видалити відгук
+        </button>
+        }
+    </div>
+</div>

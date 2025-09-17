@@ -1,0 +1,80 @@
+@if(this.volunteerGroup)
+{
+<div class="container">
+    <div class="d-flex gap-4 pb-4 pt-2">
+        <a class="btn btn-custom" [routerLink]="['/volunteer', 'groups', this.volunteerGroup.id!, 'admins']">
+            <i class="fa-solid fa-users"></i>
+            Адміністратори ({{this.volunteerGroup.administratorsCount}})
+        </a>
+        <a class="btn btn-custom" [routerLink]="['/volunteer', 'groups', this.volunteerGroup.id!, 'followers']">
+            <i class="fa-solid fa-users"></i>
+            Учасники ({{this.volunteerGroup.followersCount}})
+        </a>
+        <a class="btn btn-custom" [routerLink]="['/volunteer/events']" [queryParams]="{ volunteerGroupId: this.volunteerGroup.id}">
+            <i class="fa-solid fa-hourglass-half"></i>
+            Заходи групи ({{this.volunteerGroup.volunteerEventsCount}})
+        </a>
+        @if(this.isAuthenticated && this.isAllowedToEdit)
+        {
+        <button class="btn btn-custom" [routerLink]="['/volunteer', 'groups', this.volunteerGroup.id!, 'edit']">
+            <i class="fa-solid fa-pen"></i>
+            Редагувати
+        </button>
+        <button class="btn btn-custom-danger" (click)="this.onDelete()">
+            <i class="fa-solid fa-trash-can"></i>
+            Видалити
+        </button>
+        <div #deletionConfirmation style="display: none;" class="justify-content-between gap-2">
+            <span class="align-middle pt-2">Ви впевнені?</span>
+            <button class="btn btn-custom-green" (click)="confirmDeletion()">Так</button>
+            <button class="btn btn-custom-danger" (click)="cancelDeletion()">Ні</button>
+        </div>
+        }
+    </div>
+    <div class="pb-4 d-flex justify-content-between">
+        <div>
+            <h2 class="text-custom-pale-yellow text-start">{{ volunteerGroup.title }}</h2>
+        </div>
+        <div class="d-flex flex-column text-end pt-1">
+            <span class="lh-lg fw-normal text-start fs-5 text-custom-pale-yellow"><strong>Створена: {{
+                    this.volunteerGroup.createdAt | date: 'longDate' }}</strong></span>
+        </div>
+    </div>
+    <h3 class="text-start text-custom-pale-yellow">Опис</h3>
+    <div class="pb-4">
+        <app-content paragraphClass="lh-lg fw-normal text-start fs-5"
+            [content]="this.volunteerGroup.descriptionContent || ''"></app-content>
+    </div>
+    @if(this.authService.authSubject.value && !this.isAdmin)
+    {
+    @if(this.isUserFollowing != undefined)
+    {
+    @if(!this.isUserFollowing)
+    {
+    <button class="btn btn-custom-green px-5" (click)="this.onFollowed()"><strong><i
+                class="fa-solid fa-check me-2"></i>Приєднатись</strong></button>
+    }
+    @else {
+    <button class="btn btn-custom-danger px-5" (click)="this.onLeave()"><strong><i
+                class="fa-solid fa-x me-2"></i>Покинути групу</strong></button>
+    }
+    }
+    @else {
+    <div class="mb-4">
+        <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+    </div>
+    }
+    }
+</div>
+}
+@else {
+@if(isDeleted)
+{
+<div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal fs-4 form-success-display">
+    Волонтерську групу видалено!
+</div>
+}
+@else{
+<img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+}
+}

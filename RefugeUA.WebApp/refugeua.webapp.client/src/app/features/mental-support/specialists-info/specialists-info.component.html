@@ -1,0 +1,35 @@
+<div class="row m-2">
+    <app-search-bar class="mb-4" placeholder="Заголовок..."
+        [onSearchBarSearch]="this.getOnSearchBarCallback()"></app-search-bar>
+    @if(this.authService.isCommunityAdminSubject.value || this.authService.isAdminSubject.value)
+    {
+    <div class="mb-4">
+        <a routerLink="create" class="btn btn-custom-green"><strong>Створити контакт</strong></a>
+    </div>
+    }
+    <div class="col-12 mt-1 gap-4 d-flex flex-column">
+        @if(this.dataLoaded)
+        {
+        @if(!this.dataFound)
+        {
+        <span class="error-display">Не було знайдено контактів!</span>
+        }
+        @else {
+        <div class="row">
+            @for (item of this.currentPsychologistInfos; track $index) {
+            @if($index % 3 == 0 && $index != 0)
+            {
+            <div class="w-100 pt-3 pb-2"></div>
+            }
+            <app-specialists-info-preview class="col-4" [psychologistInformation]="item"></app-specialists-info-preview>
+            }
+        </div>
+        <app-paging-navigation [pagesCount]="this.pages" [onNavigationCallback]="getNavigationCallback()"
+            [currentPage]="this.currentPage"></app-paging-navigation>
+        }
+        }
+        @else {
+        <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+        }
+    </div>
+</div>

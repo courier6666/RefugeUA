@@ -1,0 +1,52 @@
+<div class="container mt-5">
+  <div class="mx-auto mw-50" style="max-width: 350px;">
+    <h3 class="text-center">Вхід</h3>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="d-flex flex-column w-100">
+      <div class="form-group mt-3 text-start">
+        <label class="h5" for="email">Електронна пошта</label>
+        <input id="email" type="email" class="form-control" placeholder="Пошта" formControlName="email" />
+        @if(email?.touched && email?.errors)
+        {
+        <div class="form-error-display">
+          <div *ngIf="email?.errors?.['emailShouldExist']" class="text-custom-light-red">Пошту не знайдено.</div>
+          <div *ngIf="email?.errors?.['required']" class="text-custom-light-red">Електронна пошта є обов’язковою.</div>
+        </div>
+        }
+      </div>
+
+      <div class="form-group mt-3 text-start">
+        <label class="h5" for="password">Пароль</label>
+        <input id="password" type="password" class="form-control" placeholder="Пароль" formControlName="password" />
+        @if(password?.touched && password?.errors)
+        {
+        <div class="form-error-display">
+          <div *ngIf="password?.errors?.['required']" class="text-custom-light-red">Пароль є обов’язковим.
+          </div>
+        </div>
+        }
+      </div>
+
+      @if(this.isFormSubmitted)
+      {
+      @if(resultSuccess == null) {
+      <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+      }
+      @else if(!resultSuccess) {
+      <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal form-error-display">
+        {{this.resultMessage}}
+      </div>
+      }
+      @else {
+      <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal form-success-display">
+        Успіх
+      </div>
+      }
+      }
+
+      <div class="d-flex justify-content-between mt-4 gap-2 w-100">
+        <button class="btn btn-custom-green w-100" type="submit" [disabled]="loginForm.pending || loginForm.invalid || this.resultSuccess">Увійти</button>
+        <button class="btn btn-custom-danger w-100" type="button" (click)="onCancel()">Скасувати</button>
+      </div>
+    </form>
+  </div>
+</div>

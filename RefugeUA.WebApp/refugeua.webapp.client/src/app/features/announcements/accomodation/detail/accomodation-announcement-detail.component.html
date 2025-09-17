@@ -1,0 +1,130 @@
+@if(this.accomodationAnnouncement)
+{
+<div class="container">
+    @if(this.isAuthenticated && this.isAllowedToEdit)
+    {
+    <div class="d-flex gap-4 pb-4 pt-2">
+        <a class="btn btn-custom" [routerLink]="['/announcements', this.accomodationAnnouncement.id, 'responses']">
+            <i class="fa-solid fa-eye"></i>
+            Переглянути відгуки
+        </a>
+        <a [routerLink]='["/announcements", "accomodation" , this.accomodationAnnouncement.id, "edit"]'
+            class="btn btn-custom">
+            <i class="fa-solid fa-pen"></i>
+            Редагувати
+        </a>
+        <a [routerLink]="['/announcements', 'accomodation', this.accomodationAnnouncement.id, 'groups']"
+            class="btn btn-custom">
+            <i class="fa-solid fa-tag"></i>
+            Переглянути групи
+        </a>
+        @if(!this.accomodationAnnouncement.isClosed)
+        {
+        <button class="btn btn-custom" (click)="this.onClosed()">
+            <i class="fa-solid fa-lock"></i>
+            Закрити оголошення
+        </button>
+        }
+        @else{
+        <button class="btn btn-custom" (click)="this.onOpen()">
+            <i class="fa-solid fa-lock-open"></i>
+            Відкрити оголошення
+        </button>
+        }
+        <button class="btn btn-custom-danger" (click)="this.onDelete()">
+            <i class="fa-solid fa-trash-can"></i>
+            Видалити
+        </button>
+        <div #deletionConfirmation style="display: none;" class="justify-content-between gap-2">
+            <span class="align-middle pt-2">Ви впевнені?</span>
+            <button class="btn btn-custom-green" (click)="confirmDeletion()">Так</button>
+            <button class="btn btn-custom-danger" (click)="cancelDeletion()">Ні</button>
+        </div>
+    </div>
+    }
+
+    <div class="pb-4 d-flex justify-content-between">
+        <div>
+            <h2 class="text-custom-pale-yellow text-start">{{ accomodationAnnouncement.title }}</h2>
+            <h3 class="text-muted text-custom-pale-yellow text-start">
+                <strong>{{ accomodationAnnouncement.areaSqMeters }} м²</strong>
+            </h3>
+            <div *ngIf="accomodationAnnouncement.price" class="text-start">
+                <span class="fs-3 text-start text-custom-yellow">
+                    <strong>
+                        {{ accomodationAnnouncement.price! > 0
+                        ? ('Оплата: ' + accomodationAnnouncement.price + ' грн')
+                        : 'Безплатно' }}
+                    </strong>
+                </span>
+            </div>
+        </div>
+        <div class="d-flex flex-column text-end pt-1">
+            <span class="lh-lg fw-normal text-start fs-5 text-custom-pale-yellow">
+                <strong>Створена: {{ accomodationAnnouncement.createdAt | date: 'longDate' }}</strong>
+            </span>
+        </div>
+    </div>
+
+    <h3 class="text-start text-custom-pale-yellow">Опис</h3>
+    <div class="pb-4">
+        <app-content paragraphClass="lh-lg fw-normal text-start fs-5"
+            [content]="accomodationAnnouncement.content || ''"></app-content>
+    </div>
+
+    <div class="pb-4 text-custom-pale-yellow fs-5 text-start">
+        <p><strong>Тип будівлі:</strong> {{ accomodationAnnouncement.buildingType }}</p>
+        <p><strong>Кількість кімнат:</strong> {{ accomodationAnnouncement.numberOfRooms }}</p>
+        <p><strong>Місткість:</strong> {{ accomodationAnnouncement.capacity }} осіб</p>
+        <p><strong>Кількість поверхів:</strong> {{ accomodationAnnouncement.floors }}</p>
+        <p><strong>Дозволено з тваринами:</strong> {{ accomodationAnnouncement.petsAllowed ? 'Так' : 'Ні' }}</p>
+    </div>
+
+    <app-contact-information [contactInformation]="accomodationAnnouncement.contactInformation!">
+    </app-contact-information>
+
+    @if(this.accomodationAnnouncement.address)
+    {
+    <app-address-detail [address]="this.accomodationAnnouncement.address!"></app-address-detail>
+    }
+
+    @if(this.accomodationAnnouncement.images && this.accomodationAnnouncement.images.length > 0)
+    {
+    <h3 class="text-start text-custom-pale-yellow">Фото</h3>
+    <div class="row pb-4 justify-content-md-center">
+        @for (image of this.accomodationAnnouncement.images; track $index) {
+        @if($index % 2 == 0 && $index != 0)
+        {
+        <div class="w-100 pt-2"></div>
+        }
+        <div class="col-6 d-flex justify-content-md-center">
+            <img style="overflow: hidden; object-fit: cover; width: 800px"
+                [src]="this.fileService.getApiPath(image.path)" alt="Зображення житла" class="mb-3 img-border">
+        </div>
+        }
+    </div>
+    }
+
+    <app-announcement-detail-acceptence [announcement]="this.accomodationAnnouncement"
+        [isAuthenticated]="this.isAuthenticated" [isAllowedToEdit]="this.isAllowedToEdit">
+    </app-announcement-detail-acceptence>
+
+    @if(this.authService.authSubject.value && this.authService.userClaims.role == Roles.MilitaryOrFamily)
+    {
+    <div>
+        <app-response-create [announcementId]="accomodationAnnouncement.id || 0"></app-response-create>
+    </div>
+    }
+</div>
+}
+@else {
+@if(isDeleted)
+{
+<div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal fs-4 form-success-display">
+    Оголошення видалено!
+</div>
+}
+@else{
+<img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+}
+}

@@ -1,0 +1,21 @@
+<div class="container pt-4">
+    <div class="row justify-content-md-center">
+        <div class="col-6">
+            <h2>Підтвердження пошти</h2>
+            @if(result == null) {
+            <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+            }
+            @else if(!result) {
+            <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal fs-5 form-error-display">Виникла помилка
+                в підтвердженні пошти,
+                спробуйте ще
+                раз
+            </div>
+            }
+            @else {
+            <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal fs-5 form-success-display">Пошту успішно підтверджено
+            </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="row m-2">
+    <app-search-bar class="mb-4" placeholder="Заголовок..."
+        [onSearchBarSearch]="this.getOnSearchBarCallback()"></app-search-bar>
+    @if(this.authService.authSubject.value && this.authService.userClaims.role != Roles.MilitaryOrFamily)
+    {
+    <div class="mb-4">
+        <a routerLink="create" class="btn btn-custom-green"><strong>Створити оголошення про волонтерську
+                подію</strong></a>
+    </div>
+    }
+    <div class="col-3">
+        <form [formGroup]="volunteerEventSearchForm" class="d-flex flex-column w-100">
+            <div class="form-group text-start">
+                <label class="h5">Громада</label>
+                <ul class="list-unstyled my-0 mx-2">
+                    <li class="no-style d-flex flex-align-center mb-0 mt-2 gap-2">
+                        <input type="text" class="form-control" placeholder="Громада" formControlName="district" />
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group mt-2 text-start">
+                <label class="h5">Діапазон дат</label>
+                <ul class="list-unstyled my-0 mx-2">
+                    <li class="no-style d-flex flex-align-center mb-0 mt-2 gap-2">
+                        <span class="mr-sm mt-2 option-nav-label">від</span>
+                        @if(endDate?.value)
+                        {
+                        <input type="date" class="form-control" formControlName="startDate" [max]="endDate?.value" />
+                        }
+                        @else
+                        {
+                        <input type="date" class="form-control" formControlName="startDate" />
+                        }
+                    </li>
+                    <li class="no-style d-flex flex-align-center mb-0 mt-2 gap-2">
+                        <span class="mr-sm mt-2 option-nav-label">до</span>
+                        @if(startDate?.value)
+                        {
+                        <input type="date" class="form-control" formControlName="endDate" [min]="startDate?.value" />
+                        }
+                        @else
+                        {
+                        <input type="date" class="form-control" formControlName="endDate" />
+                        }
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group mt-2 text-start">
+                <label class="h5">Тип події</label>
+                <ul class="list-unstyled my-0 mx-2">
+                    <li class="no-style d-flex gap-2 mt-2">
+                        <select class="form-control" formControlName="eventType">
+                            <option [ngValue]="null">будь-який</option>
+                            <option [ngValue]="VolunteerEventType.Donation">Пожертвування</option>
+                            <option [ngValue]="VolunteerEventType.Participation">Пряма участь</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group mt-2 text-start">
+                <label class="h5">Організація / Група</label>
+
+                <ul class="list-unstyled my-0 mx-2">
+                    @if(this.volunteerGroups)
+                    {
+                    <li class="no-style d-flex gap-2 mt-2">
+                        <select class="form-control" formControlName="volunteerGroupId">
+                            <option [ngValue]="null">будь-яка</option>
+                            @for (item of this.volunteerGroups; track $index) {
+                            <option [ngValue]="item.id">{{item.title}}</option>
+                            }
+                        </select>
+                    </li>
+                    }
+                    @else {
+                    <img src="assets/gif/loading.gif" width="50em" style="margin-left: auto; margin-right: auto;">
+                    }
+                </ul>
+            </div>
+        </form>
+    </div>
+    <div class="col-9 d-flex flex-column gap-4 mt-1">
+        @if(this.dataLoaded)
+        {
+        @if(!this.dataFound)
+        {
+        <span class="error-display">Не було знайдено події!</span>
+        }
+        @else {
+        @for (item of this.currentVolunteerEvents; track $index) {
+        <app-volunteer-event-preview [volunteerEvent]="item"></app-volunteer-event-preview>
+        }
+        <app-paging-navigation [pagesCount]="this.pages" [onNavigationCallback]="getNavigationCallback()"
+            [currentPage]="this.currentPage"></app-paging-navigation>
+        }
+        }
+        @else {
+        <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+        }
+    </div>
+</div>

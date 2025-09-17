@@ -1,0 +1,31 @@
+<div class="container mt-4">
+    <h2>Мої події, в яких я беру участь</h2>
+    <div class="row justify-content-md-center mb-4">
+        <div class="col-md-8">
+            <app-search-bar class="mb-4" placeholder="Заголовок..."
+                [onSearchBarSearch]="this.getOnSearchBarCallback()"></app-search-bar>
+        </div>
+    </div>
+
+    <div class="row m-2 justify-content-md-center">
+        <div class="col-8 d-flex flex-column gap-4 mt-1">
+            @if(this.volunteerEventsLoaded)
+            {
+            @if(!this.volunteerEventsFound)
+            {
+            <span class="error-display">Не було знайдено події!</span>
+            }
+            @else {
+            @for (item of this.volunteerEvents; track $index) {
+                <app-profile-volunteer-event-preview [volunteerEvent]="item" fromPage="participated"></app-profile-volunteer-event-preview>
+            }
+            <app-paging-navigation [pagesCount]="this.pages" [onNavigationCallback]="getNavigationCallback()"
+                [currentPage]="this.currentPage"></app-paging-navigation>
+            }
+            }
+            @else {
+            <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+            }
+        </div>
+    </div>
+</div>

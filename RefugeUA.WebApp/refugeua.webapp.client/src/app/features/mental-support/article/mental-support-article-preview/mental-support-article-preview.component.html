@@ -1,0 +1,14 @@
+<div class="card h-100" (click)="this.onPreviewClick()">
+  <div class="card-header m-2 d-flex justify-content-between">
+    <div class="py-2">
+      <h5 class="card-title text-custom-pale-yellow">{{ mentalSupportArticle?.title }}</h5>
+    </div>
+  </div>
+  <div class="mx-4 card-header-underline"></div>
+  <div class="card-body m-2 d-flex flex-column justify-content-between">
+    <p class="card-text">{{ shortContent }}</p>
+    <div class="mt-3">
+      <p class="mb-1">Дата розміщення: {{ mentalSupportArticle?.createdAt | date: 'mediumDate' }}</p>
+    </div>
+  </div>
+</div>

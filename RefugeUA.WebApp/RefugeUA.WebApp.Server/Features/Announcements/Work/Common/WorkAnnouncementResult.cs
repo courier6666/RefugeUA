@@ -1,0 +1,24 @@
+﻿using RefugeUA.Entities;
+using RefugeUA.WebApp.Server.Features.Announcements.Common;
+using RefugeUA.WebApp.Server.Shared.Dto.BaseAnnouncement;
+using RefugeUA.WebApp.Server.Shared.Dto.WorkCategory;
+
+namespace RefugeUA.WebApp.Server.Features.Announcements.Work.Common
+{
+    public class WorkAnnouncementResult : BaseAnnouncementResult
+    {
+        public string JobPosition { get; set; } = default!;
+
+        public string CompanyName { get; set; } = default!;
+
+        public decimal? SalaryLower { get; set; }
+
+        public decimal? SalaryUpper { get; set; }
+
+        public string RequirementsContent { get; set; } = default!;
+
+        public long WorkCategoryId { get; set; }
+
+        public WorkCategoryDtoWithId WorkCategory { get; set; } = default!;
+    }
+}

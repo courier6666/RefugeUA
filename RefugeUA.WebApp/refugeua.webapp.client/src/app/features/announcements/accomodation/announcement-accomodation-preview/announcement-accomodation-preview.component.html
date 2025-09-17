@@ -1,0 +1,106 @@
+<div class="card" (click)="this.onPreviewClick()">
+    <div class="card-header m-2 d-flex justify-content-between">
+        <div class="py-2">
+            <h5 class="card-title text-custom-pale-yellow">{{ accomodationAnnouncement?.title }}</h5>
+            <h6 class="card-subtitle text-muted text-custom-pale-yellow">
+                @if(this.accomodationAnnouncement?.areaSqMeters != null)
+                {
+                <span class="text-custom-pale-yellow">
+                    <strong>{{this.accomodationAnnouncement?.areaSqMeters}} м²</strong>
+                </span>
+                }
+            </h6>
+        </div>
+        <div class="py-2 d-flex mw-50 gap-1 flex-wrap">
+            <div>
+                <span class="badge float-end bg-custom-dark text-custom-yellow">
+                    {{ this.accomodationAnnouncement?.buildingType }}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="ms-4 pt-0 pb-2">
+        @if(!this.accomodationAnnouncement?.isClosed)
+        {
+        <span class="badge float-start bg-custom-pale-green text-custom-lightest mt-0 fs-5">
+            Відкрите
+        </span>
+        }
+        @else {
+        <span class="badge float-start bg-custom-dark-red text-custom-light-red mt-0 fs-5">
+            Закрите
+        </span>
+        }
+    </div>
+    <div class="mx-4 card-header-underline"></div>
+    <div class="card-body m-2">
+        <p class="card-text">{{ shortContent }}</p>
+
+        <div class="mt-3">
+            <strong>Кімнат:</strong>
+            <span>
+                {{this.accomodationAnnouncement?.numberOfRooms}}
+            </span>
+        </div>
+
+        <div class="mt-3">
+            <strong>Поверхів:</strong>
+            <span>
+                {{this.accomodationAnnouncement?.floors}}
+            </span>
+        </div>
+
+        <div class="mt-3">
+            <strong>Кількість місць для проживання:</strong>
+            <span>
+                {{this.accomodationAnnouncement?.capacity}}
+            </span>
+        </div>
+
+        <div class="mt-3">
+            <strong>Оплата:</strong>
+            @if(!this.accomodationAnnouncement?.isFree)
+            {
+            <span>
+                {{this.accomodationAnnouncement?.price}} UAH
+            </span>
+            }
+            @else {
+            <span>
+                безплатно
+            </span>
+            }
+        </div>
+        @if(this.accomodationAnnouncement?.address != null)
+        {
+        <div class="mt-3">
+            <strong>Адреса:</strong>
+            <app-address [address]="this.accomodationAnnouncement?.address"></app-address>
+        </div>
+        }
+
+        <div class="mt-3">
+            <strong>Домашні тварини: </strong>
+            <span>{{(this.accomodationAnnouncement?.petsAllowed ? 'Дозволено' : 'Заборонено')}}</span>
+        </div>
+
+        <div class="mt-3">
+            <p class="mb-1">Дата розміщення: {{ accomodationAnnouncement?.createdAt | date: 'mediumDate' }}</p>
+        </div>
+
+        @if(this.accomodationAnnouncement?.announcementGroups && this.accomodationAnnouncement?.announcementGroups!.length >
+        0)
+        {
+        <div class="mt-3 card-header-underline"></div>
+        <div class="mt-3 d-flex justify-content-start flex-wrap flex-row gap-2">
+            @for (item of this.accomodationAnnouncement?.announcementGroups; track $index) {
+            <div>
+                <span class="badge float-end bg-custom-dark text-custom-yellow">
+                    {{ item.name }}
+                </span>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

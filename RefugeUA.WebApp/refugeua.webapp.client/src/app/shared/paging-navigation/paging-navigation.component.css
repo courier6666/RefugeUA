@@ -1,0 +1,21 @@
+.pagination-gap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: 0 0.25rem;
+    border-radius: 0.5rem;
+    background-color: var(--val-darker);
+    font-weight: bold;
+  }
+
+.paging-arrow-button {
+    border: none !important;
+    background-color: transparent !important;
+    color: var(--val-light) !important;
+}
+
+.paging-arrow-button:hover {
+    color: var(--val-lightest) !important;
+}

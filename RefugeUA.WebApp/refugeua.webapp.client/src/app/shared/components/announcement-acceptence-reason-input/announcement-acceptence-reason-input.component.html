@@ -1,0 +1,33 @@
+<form [formGroup]="acceptenceReasonFormGroup" class="d-flex flex-column w-100" (ngSubmit)="onSubmit()">
+    <div class="form-group mt-3 text-start">
+        <textarea type="text" class="form-control" formControlName="acceptenceReason"
+            placeholder="Введіть причину..."></textarea>
+    </div>
+
+    @if(this.isAcceptenceLoading)
+    {
+    <img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+    }
+    @else {
+    @if(this.acceptenceChangeSuccessStatus != undefined)
+    {
+    @if(!this.acceptenceChangeSuccessStatus) {
+    <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal form-error-display">
+        Виникла помилка при зміні причини відхилення оголошення.
+    </div>
+    }
+    @else {
+    <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal form-success-display">
+        Причина відхилення оголошення успішно задана.
+    </div>
+    }
+    }
+    }
+
+    <div class="d-flex justify-content-between mt-4 gap-2 w-100">
+        <button class="btn btn-custom-green w-100" type="submit">
+            Змінити / Встановити причину віхилення
+        </button>
+        <button [disabled]="this.acceptenceReasonFormGroup.pending || this.acceptenceReasonFormGroup.invalid || this.isAcceptenceLoading" class="btn btn-custom-danger w-100" type="button" (click)="onCancel()">Скасувати зміни</button>
+    </div>
+</form>

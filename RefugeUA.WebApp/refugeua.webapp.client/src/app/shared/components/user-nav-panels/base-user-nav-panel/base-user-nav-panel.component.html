@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg bg-custom-darker shadow-sm">
+    <div class="container-fluid text-custom-lightest ">
+        <div class="d-flex justify-content-center gap-4 w-100">
+            @switch (this.authService.userClaims.role) {
+            @case (Roles.Admin) {
+            <app-admin-nav-panel></app-admin-nav-panel>
+            }
+            @case (Roles.CommunityAdmin)
+            {
+            <app-community-admin-nav-panel></app-community-admin-nav-panel>
+            }
+            @case (Roles.MilitaryOrFamily)
+            {
+            <app-military-or-family-nav-panel></app-military-or-family-nav-panel>
+            }
+            @case (Roles.Volunteer) {
+            <app-volunteer-nav-panel></app-volunteer-nav-panel>
+            }
+            @case (Roles.LocalCitizen) {
+            <app-local-citizen-nav-panel></app-local-citizen-nav-panel>
+            }
+            }
+        </div>
+    </div>
+</nav>

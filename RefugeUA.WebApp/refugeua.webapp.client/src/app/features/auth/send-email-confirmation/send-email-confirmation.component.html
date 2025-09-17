@@ -1,0 +1,39 @@
+<div class="container mt-5">
+    <div class="mx-auto mw-50" style="max-width: 350px;">
+        <h3 class="text-center">Підтвердити пошти</h3>
+        <form [formGroup]="sendEmailConfirmationForm" (ngSubmit)="onSubmit()" class="d-flex flex-column w-100">
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="email">Електронна пошта</label>
+                <input id="email" type="email" class="form-control" placeholder="Пошта" formControlName="email" />
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="password">Пароль</label>
+                <input id="password" type="password" class="form-control" placeholder="Пароль"
+                    formControlName="password" />
+            </div>
+
+            @if(this.isSubmitted)
+            {
+            @if(resultSuccess == null) {
+            <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+            }
+            @else if(!resultSuccess) {
+            <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal form-error-display">Виникла помилка
+                під час відправлення інструкції на пошту
+            </div>
+            }
+            @else {
+            <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal form-success-display">На пошту відправлено подальші інструкції для підтвердження електронної пошти.
+            </div>
+            }
+            }
+
+            <div class="d-flex justify-content-between mt-4 gap-2 w-100">
+                <button class="btn btn-custom-green w-100" type="submit" [disabled]="sendEmailConfirmationForm.pending || sendEmailConfirmationForm.invalid"
+                    ons>Відправити</button>
+                <button class="btn btn-custom-danger w-100" type="button" (click)="onCancel()">Скасувати</button>
+            </div>
+        </form>
+    </div>
+</div>

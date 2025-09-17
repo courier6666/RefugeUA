@@ -1,0 +1,10 @@
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <form class="d-flex flex-row" [formGroup]="this.searchForm" (ngSubmit)="this.onSubmit()">
+            <input class="form-control me-2" type="search" formControlName="search" [placeholder]="placeholder" aria-label="Search">
+            <button class="btn btn-custom d-flex align-items-center gap-1" type="submit">
+                <i class="fa-solid fa-search"></i>Пошук
+            </button>
+        </form>
+    </div>
+</div>

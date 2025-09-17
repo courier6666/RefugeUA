@@ -1,0 +1,21 @@
+.card {
+    border-width: 2px;
+    border-color: var(--val-lightest);
+    box-shadow: 0px 1px 3px 0px var(--val-saturated-blue);
+    transition: box-shadow 0.2s ease;
+    text-align: left;
+    border-radius: 1.1rem;
+}
+
+.card-header
+{
+    border: none;
+}
+
+.card-header-underline {
+    border-bottom: 1px solid var(--val-light);
+}
+
+.card:hover {
+    cursor: default;
+}

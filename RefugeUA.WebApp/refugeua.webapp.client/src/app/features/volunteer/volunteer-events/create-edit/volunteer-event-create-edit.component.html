@@ -1,0 +1,346 @@
+<div class="container my-5">
+    <div class="mx-auto mw-50" style="max-width: 700px;">
+        <h3 class="text-center">
+            @if(this.currentRoute == "create"){
+            Створити оголошення про волонтерську подію
+            }
+            @else {
+            Редагувати оголошення про волонтерську подію
+            }
+        </h3>
+        @if((this.isEventLoaded && !this.isLoadingFailed) || this.currentRoute == "create")
+        {
+        <form [formGroup]="volunteerEventForm" class="d-flex flex-column w-100" (ngSubmit)="this.onSubmit()">
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="title">Заголовок *</label>
+                <input id="title" type="text" class="form-control" placeholder="Заголовок" formControlName="title" />
+                @if(title?.touched && title?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="title?.errors?.['required']" class="text-custom-light-red">Загаловок є
+                        обов’язковим.</div>
+                    <div *ngIf="title?.errors?.['maxlength']" class="text-custom-light-red">Заголовок не може
+                        бути довшим
+                        за 200
+                        символів.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="content">Опис *</label>
+                <textarea id="content" class="form-control" placeholder="Опис оголошення"
+                    formControlName="content"></textarea>
+                @if(content?.touched && content?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="content?.errors?.['required']" class="text-custom-light-red">Опис є
+                        обов’язковим.</div>
+                    <div *ngIf="content?.errors?.['maxlength']" class="text-custom-light-red">Опис не може
+                        бути довшим
+                        за 4096
+                        символів.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="volunteerEventType">Тип події *</label>
+                <select id="volunteerEventType" class="form-control" placeholder="Тип події"
+                    formControlName="volunteerEventType">
+                    <option [value]="null">Оберіть тип події</option>
+                    <option [value]="VolunteerEventType.Donation">Пожертвування</option>
+                    <option [value]="VolunteerEventType.Participation">Пряма участь</option>
+                </select>
+                @if(volunteerEventType.touched && volunteerEventType.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="volunteerEventType.errors?.['required']" class="text-custom-light-red">Тип оголошення є
+                        обов’язковим.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="volunteerGroupId">Волонтерська група</label>
+                <select id="volunteerGroupId" class="form-control" placeholder="Тип події"
+                    formControlName="volunteerGroupId">
+                    <option [value]="null">Оберіть волонтерську групу</option>
+                    @for (group of this.availableVolunteerGroups; track $index) {
+                    <option [value]="group.id">{{group.title}}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="startTime">Дата початку *</label>
+                <input id="startTime" type="date" class="form-control" formControlName="startTime"
+                    [max]="this.endTime?.value" />
+                @if(startTime?.touched && startTime?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="startTime?.errors?.['required']" class="text-custom-light-red">Дата початку є
+                        обов’язковою.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="endTime">Дата кінця *</label>
+                <input id="endTime" type="date" class="form-control" formControlName="endTime"
+                    [min]="this.startTime?.value" />
+                @if(endTime?.touched && endTime?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="endTime?.errors?.['required']" class="text-custom-light-red">Дата кінця є
+                        обов’язковою.</div>
+                </div>
+                }
+            </div>
+
+            @if(this.volunteerEventType.value == VolunteerEventType.Participation)
+            {
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="onlineConferenceLink">Посилання на онлайн конференцію</label>
+                <input id="onlineConferenceLink" class="form-control" placeholder="Посиланння"
+                    formControlName="onlineConferenceLink" />
+                @if(onlineConferenceLink?.touched && onlineConferenceLink?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="onlineConferenceLink?.errors?.['required']" class="text-custom-light-red">Посилання на
+                        конференцію є
+                        обов’язковим.</div>
+                    <div *ngIf="onlineConferenceLink?.errors?.['maxlength']" class="text-custom-light-red">Посилання на
+                        конференцію не може
+                        бути довшим
+                        за 500
+                        символів.</div>
+                </div>
+                }
+            </div>
+            }
+
+            @if(this.volunteerEventType.value == VolunteerEventType.Donation)
+            {
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="donationLink">Посилання на пожертвування</label>
+                <input id="donationLink" class="form-control" placeholder="Посиланння" formControlName="donationLink" />
+                @if(donationLink?.touched && donationLink?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="donationLink?.errors?.['required']" class="text-custom-light-red">Посилання на
+                        пожертвування є
+                        обов’язковим.</div>
+                    <div *ngIf="donationLink?.errors?.['maxlength']" class="text-custom-light-red">Посилання на
+                        пожертвування не може
+                        бути довшим
+                        за 500
+                        символів.</div>
+                </div>
+                }
+            </div>
+            }
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5">Розклад</label>
+                <div formArrayName="scheduleItems">
+                    @for (item of this.scheduleItems.controls; track item; let i = $index) {
+                    <div [formGroupName]="i" class="mb-2 row form-group">
+                        <input type="hidden" formControlName="id" />
+                        <div class="d-flex flex-column col-5">
+                            <label class="h6">Дата та час *</label>
+                            <input formControlName="time" class="form-control" type="datetime-local"
+                                [max]="`${this.endTime?.value}T23:59`" [min]="`${this.startTime?.value}T00:00`" />
+                        </div>
+                        <div class="d-flex flex-column col-6">
+                            <label class="h6">Опис *</label>
+                            <input formControlName="description" class="form-control" />
+                        </div>
+                        <div class="col-1 mt-auto mb-0">
+                            <button type="button" (click)="removeScheduleItem(i)"
+                                class="btn btn-custom-danger mt-2">X</button>
+                        </div>
+                    </div>
+                    @if((item.get('time')?.errors && item.get('time')?.errors) ||
+                    (item.get('description')?.errors && item.get('description')?.errors))
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="item.get('time')?.errors?.['itemTimeMustBeAfterStartTime']"
+                            class="text-custom-light-red">Час розкладу повинен бути пізніше часу початку події.
+                        </div>
+                        <div *ngIf="item.get('time')?.errors?.['itemTimeMustBeBeforeEndTime']"
+                            class="text-custom-light-red">Час розкладу повинен бути раніше часу кінця події.</div>
+                        <div *ngIf="item.get('time')?.errors?.['required']" class="text-custom-light-red">Дата та
+                            час є
+                            обов’язковими.</div>
+                        <div *ngIf="item.get('description')?.errors?.['required']" class="text-custom-light-red">
+                            Опис розкладу є обов'язковим.</div>
+                        <div *ngIf="item.get('description')?.errors?.['maxlength']" class="text-custom-light-red">
+                            Опис розкладу не може
+                            бути довшим
+                            за 400
+                            символів.</div>
+                    </div>
+                    }
+                    }
+                </div>
+                <button type="button" (click)="addScheduleItem()" class="btn btn-secondary mt-3">Додати розклад</button>
+            </div>
+
+            <div class="d-flex flex-align-center mb-3 mt-3 col-6">
+                <label class="custom-checkbox-container">
+                    <input style="width: 1.25rem; height: 1.25rem;" type="checkbox" id="isFree"
+                        [checked]="this.includeAddress" (change)="onIncludeAddressChecked($event)" />
+                    <span class="custom-checkbox"></span>
+                    <span class="mr-sm mt-2 checkbox-label">Включити адресу</span>
+                </label>
+            </div>
+
+            @if(this.includeAddress)
+            {
+            <div formGroupName="address">
+                <h4 class="pt-4">Адреса</h4>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="country">Країна *</label>
+                    <input id="country" type="text" class="form-control" formControlName="country"
+                        placeholder="Країна" />
+                    @if(country?.touched && country?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="country?.errors?.['required']" class="text-custom-light-red">Країна є обов’язковою.
+                        </div>
+                        <div *ngIf="country?.errors?.['maxlength']" class="text-custom-light-red">Назва країни
+                            не може перевищувати 200 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="region">Область *</label>
+                    <input id="region" type="text" class="form-control" formControlName="region"
+                        placeholder="Область" />
+                    @if(region?.touched && region?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="region?.errors?.['required']" class="text-custom-light-red">Область / регіон є
+                            обов’язковим.
+                        </div>
+                        <div *ngIf="region?.errors?.['maxlength']" class="text-custom-light-red">Назва області
+                            не може перевищувати 200 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="district">Громада *</label>
+                    <input id="district" type="text" class="form-control" formControlName="district"
+                        placeholder="Громада" />
+                    @if(district?.touched && district?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="district?.errors?.['required']" class="text-custom-light-red">Громада є
+                            обов’язковою.
+                        </div>
+                        <div *ngIf="district?.errors?.['maxlength']" class="text-custom-light-red">Назва громади
+                            не може перевищувати 200 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="settlement">Населений пункт *</label>
+                    <input id="settlement" type="text" class="form-control" formControlName="settlement"
+                        placeholder="Населений пункт" />
+                    @if(settlement?.touched && settlement?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="settlement?.errors?.['required']" class="text-custom-light-red">Населений пункт є
+                            обов’язковим.
+                        </div>
+                        <div *ngIf="settlement?.errors?.['maxlength']" class="text-custom-light-red">Назва населеного
+                            пункту
+                            не може перевищувати 200 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="street">Вулиця *</label>
+                    <input id="street" type="text" class="form-control" formControlName="street" placeholder="Вулиця" />
+                    @if(street?.touched && street?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="street?.errors?.['required']" class="text-custom-light-red">Вулиця є
+                            обов’язковою.
+                        </div>
+                        <div *ngIf="street?.errors?.['maxlength']" class="text-custom-light-red">Назва вулиці
+                            пункту
+                            не може перевищувати 200 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="postalCode">Поштовий індекс *</label>
+                    <input id="postalCode" type="text" class="form-control" formControlName="postalCode"
+                        placeholder="Приклад: 12345" />
+                    @if(postalCode?.touched && postalCode?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="postalCode?.errors?.['required']" class="text-custom-light-red">Поштовий індекс є
+                            обов’язковим.
+                        </div>
+                        <div *ngIf="postalCode?.errors?.['pattern']" class="text-custom-light-red">Поштовий індекс має
+                            складатися із 5 цифр.
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+
+            @if(this.isFormSubmitted)
+            {
+            @if(resultSuccess == null) {
+            <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+            }
+            @else if(!resultSuccess) {
+            <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal form-error-display">
+                <div class="text-start fs-5"> Виникла помилка під час {{(this.currentRoute == "create") ? "створення" :
+                    "редагування"}} волонтерської
+                    події.</div>
+                @for (item of this.submitErrorResult; track $index)
+                {
+                <div class="text-start">{{item}}</div>
+                }
+            </div>
+            }
+            @else {
+            <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal form-success-display">
+                Оголошення про волонтерську подію {{(this.currentRoute == "create") ? "створене" : "редаговане"}}.
+            </div>
+            }
+            }
+
+            <div class="d-flex justify-content-between mt-4 gap-2 w-100">
+                <button class="btn btn-custom-green w-100" type="submit"
+                    [disabled]="volunteerEventForm.invalid || volunteerEventForm.pending || (this.isFormSubmitted && this.resultSuccess == null)">
+                    @if(this.currentRoute == "create")
+                    {
+                    Створити
+                    }
+                    @else {
+                    Редагувати
+                    }
+                </button>
+                <button class="btn btn-custom-danger w-100" type="button" (click)="this.onCancel()">Скасувати</button>
+            </div>
+        </form>
+        }
+        @else if(this.isLoadingFailed)
+        {
+        <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal fs-4 form-success-display">
+            Волонтерську подію не було знайдено або виникла помилка під час завантаження форми!
+        </div>
+        }
+        @else {
+        <img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+        }
+    </div>
+</div>

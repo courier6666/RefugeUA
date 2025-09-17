@@ -1,0 +1,74 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-3 text-center">
+            @if(this.profilePath)
+            {
+            <img style="border-radius: 50%; overflow: hidden; object-fit: cover; height: 200px; width: 200px;"
+                [src]="this.profilePath" alt="Profile Image" class="mb-3 img-border">
+            }
+            <h4>{{ user.firstName + ' ' + user.lastName }}</h4>
+            <span class="badge bg-custom-light">{{ roleUkr }}</span>
+        </div>
+
+        <div class="col-9">
+            <h5 class="mb-3">Особиста інформація</h5>
+            <ul class="list-group mb-4">
+                <li class="list-group-item bg-custom-darker text-custom-lightest"><strong>Email:</strong> {{ user.email
+                    }}</li>
+                <li class="list-group-item bg-custom-darker text-custom-lightest"><strong>Телефон:</strong> {{
+                    user.phoneNumber }}</li>
+                <li class="list-group-item bg-custom-darker text-custom-lightest"><strong>Дата народження:</strong> {{
+                    user.dateOfBirth | date }}</li>
+                <li class="list-group-item bg-custom-darker text-custom-lightest"><strong>Громада:</strong> {{
+                    user.district || 'Не вказано' }}</li>
+                <li class="list-group-item bg-custom-darker text-custom-lightest"><strong>Реєстрація:</strong> {{
+                    user.createdAt | date }}</li>
+            </ul>
+
+            @if(this.authService.authSubject.value)
+            {
+            @if(this.viewFromMyProfile || this.authService.isAdminSubject.value
+            || (this.authService.isCommunityAdminSubject.value && this.authService.userClaims.district ==
+            this.user.district))
+            {
+            <h5 class="mb-3">Статуси підтвердження</h5>
+            <ul class="list-group">
+                <li class="list-group-item bg-custom-darker text-custom-lightest">
+                    <strong>Підтверджено email:</strong>
+                    <span [class.text-success]="user.isEmailConfirmed" [class.text-danger]="!user.isEmailConfirmed">
+                        {{ user.isEmailConfirmed ? 'Так' : 'Ні' }}
+                    </span>
+                </li>
+
+                <li class="list-group-item bg-custom-darker text-custom-lightest">
+                    <strong>Заявка прийнята:</strong>
+                    <span [class.text-success]="user.isAccepted" [class.text-danger]="!user.isAccepted">
+                        {{ user.isAccepted ? 'Так' : 'Ні' }}
+                    </span>
+                </li>
+            </ul>
+            }
+            }
+
+            @if(this.authService.authSubject.value)
+            {
+            @if(+(this.authService.userClaims.id!) == this.user.id ||
+            this.authService.isAdminSubject.value ||
+            (this.authService.isCommunityAdminSubject.value && this.authService.userClaims.district ==
+            this.user.district))
+            {
+            <div class="pt-4">
+                @if(this.viewFromMyProfile)
+                {
+                <a class="btn btn-custom" routerLink="/profile/edit">Редагувати</a>
+                }
+                @else
+                {
+                <a class="btn btn-custom" [routerLink]="['/user', this.user.id, 'profile', 'edit']">Редагувати</a>
+                }
+            </div>
+            }
+            }
+        </div>
+    </div>
+</div>

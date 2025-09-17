@@ -1,0 +1,148 @@
+@if(this.volunteerEvent)
+{
+<div class="container">
+
+    <div class="d-flex gap-4 pb-4 pt-2">
+        <a class="btn btn-custom" [routerLink]="['/volunteer/events', this.volunteerEvent.id!, 'participants']">
+            <i class="fa-solid fa-users"></i>
+            Учасники ({{this.volunteerEvent.participantsCount}})
+        </a>
+        @if(this.isAuthenticated && this.isAllowedToEdit)
+        {
+        <a class="btn btn-custom" [routerLink]="['/volunteer', 'events', volunteerEvent.id, 'edit']">
+            <i class="fa-solid fa-pen"></i>
+            Редагувати
+        </a>
+        @if(!this.volunteerEvent.isClosed)
+        {
+        <button class="btn btn-custom" (click)="this.onClosed()">
+            <i class="fa-solid fa-lock"></i>
+            Закрити подію
+        </button>
+        }
+        @else{
+        <button class="btn btn-custom" (click)="this.onOpen()">
+            <i class="fa-solid fa-lock-open"></i>
+            Відкрити подію
+        </button>
+        }
+        <button class="btn btn-custom-danger" (click)="this.onDelete()">
+            <i class="fa-solid fa-trash-can"></i>
+            Видалити
+        </button>
+        <div #deletionConfirmation style="display: none;" class="justify-content-between gap-2">
+            <span class="align-middle pt-2">Ви впевнені?</span>
+            <button class="btn btn-custom-green" (click)="confirmDeletion()">Так</button>
+            <button class="btn btn-custom-danger" (click)="cancelDeletion()">Ні</button>
+        </div>
+        }
+    </div>
+
+    <div class="pb-4 d-flex justify-content-between">
+        <div>
+            <h2 class="text-custom-pale-yellow text-start">{{ volunteerEvent.title }}</h2>
+            <h3 *ngIf="volunteerEvent.volunteerGroupTitle && volunteerEvent.volunteerGroupId" class="text-muted text-custom-pale-yellow text-start d-flex gap-3">
+                <span class="text-custom-pale-yellow"><strong>{{
+                        volunteerEvent.volunteerGroupTitle}}</strong></span>
+                <a class="btn btn-custom" [routerLink]="['/volunteer/groups', this.volunteerEvent.volunteerGroupId, 'detail']"><i class="fa-solid fa-eye"></i></a>
+            </h3>
+        </div>
+        <div class="d-flex flex-column text-end pt-1">
+            <span
+                class="badge float-end bg-custom-dark text-custom-yellow lh-lg fs-5 p-0 mt-1">{{this.volunteerEvent.volunteerEventType
+                | volunteerEventTypeToString}}</span>
+            <span class="lh-lg fw-normal text-start fs-5 text-custom-pale-yellow"><strong>Створена: {{
+                    volunteerEvent.createdAt | date: 'longDate' }}</strong></span>
+        </div>
+    </div>
+    <h3 class="text-start text-custom-pale-yellow">Опис</h3>
+    <div class="pb-4">
+        <app-content paragraphClass="lh-lg fw-normal text-start fs-5"
+            [content]="this.volunteerEvent.content || ''"></app-content>
+    </div>
+    <h3 class="text-start text-custom-pale-yellow">Дати проходження</h3>
+    <div class="pb-4 text-start">
+        <span class="fs-5"> від {{this.volunteerEvent.startTime | date: 'longDate'}} - до {{this.volunteerEvent.endTime
+            | date: 'longDate'}}</span>
+    </div>
+    @if(this.volunteerEvent.scheduleItems && this.volunteerEvent.scheduleItems.length > 0)
+    {
+    <h3 class="text-start text-custom-pale-yellow pb-2">Розклад</h3>
+    <div class="pb-5">
+        <table>
+            <tr>
+                <th>Час і дата</th>
+                <th>Опис</th>
+            </tr>
+            @for (item of this.volunteerEvent.scheduleItems; track $index) {
+            <tr>
+                <td class="text-start p-2">{{ item.startTime | date: 'fullDate' }} {{ item.startTime | date: 'shortTime'
+                    }}</td>
+                <td class="text-start p-2">{{ item.description }}</td>
+            </tr>
+            }
+        </table>
+    </div>
+    }
+    @if (this.volunteerEvent.onlineConferenceLink)
+    {
+    <h3 class="text-start text-custom-pale-yellow pb-2">Посилання на онлайн конференцію</h3>
+    <div class="py-4 text-start">
+        <a [href]="this.volunteerEvent.onlineConferenceLink">{{ this.volunteerEvent.onlineConferenceLink }}</a>
+    </div>
+    }
+    @if(this.volunteerEvent.address)
+    {
+    <app-address-detail [address]="this.volunteerEvent.address!"></app-address-detail>
+    }
+    @if(this.authService.authSubject.value && !this.isAuthUserAnOrganizer && !this.volunteerEvent.isClosed)
+    {
+    <div class="pb-4">
+        @if(this.volunteerEvent.volunteerEventType == VolunteerEventType.Donation){
+        @if(this.volunteerEvent.donationLink)
+        {
+        <a class="btn btn-custom-green px-5" [href]="this.volunteerEvent.donationLink">Пожертвувати</a>
+        }
+        }
+        @else{
+        @if(this.isUserParticipating != undefined)
+        {
+        @if(!this.isUserParticipating)
+        {
+        <button class="btn btn-custom-green px-5" (click)="this.onParticipated()"><strong><i
+                    class="fa-solid fa-check me-2"></i>Взяти участь</strong></button>
+        }
+        @else {
+        <button class="btn btn-custom-danger px-5" (click)="this.onLeave()"><strong><i
+                    class="fa-solid fa-x me-2"></i>Скасувати участь</strong></button>
+        }
+        }
+        @else {
+        <div class="mb-4">
+            <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+        </div>
+        }
+        }
+    </div>
+    }
+    <h3 class="text-start text-custom-pale-yellow pb-2">Організатори</h3>
+    <div class="pb-5">
+        <div class="d-flex flex-wrap gap-3">
+            <span *ngFor="let organizer of volunteerEvent.organizers" class="badge bg-custom-dark fs-5">
+                {{ organizer.firstName }} {{ organizer.lastName }}
+            </span>
+        </div>
+    </div>
+</div>
+}
+@else {
+@if(isDeleted)
+{
+<div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal fs-4 form-success-display">
+    Волонтерську подію видалено!
+</div>
+}
+@else{
+<img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+}
+}

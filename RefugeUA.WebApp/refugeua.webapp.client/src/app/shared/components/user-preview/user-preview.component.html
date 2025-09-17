@@ -1,0 +1,62 @@
+<div class="card">
+    <div class="card-header m-2 mb-0 d-flex justify-content-between">
+        <div class="py-2">
+            <h5 class="card-title text-custom-pale-yellow">{{ user.firstName + " " + user.lastName}}</h5>
+            <h6 class="card-subtitle text-muted text-custom-pale-yellow">
+                <span class="text-custom-pale-yellow">
+                    <strong>{{ user.email }}</strong>
+                </span>
+            </h6>
+        </div>
+    </div>
+    <div class="ms-4 pt-0 pb-2">
+        @if(this.user.isEmailConfirmed)
+        {
+        <span class="badge float-start bg-custom-pale-green text-custom-lightest mt-0 fs-5">
+            Пошта підтверджена
+        </span>
+        }
+    </div>
+    <div class="mx-4 card-header-underline"></div>
+    <div class="card-body m-2">
+        <div>
+            <strong>Номер Телефону:</strong>
+            <span>
+                {{this.user.phoneNumber}}
+            </span>
+        </div>
+
+        <div class="mt-3">
+            <strong>Роль:</strong>
+            <span>
+                {{this.user.role}}
+            </span>
+        </div>
+
+        @if(this.user.district)
+        {
+        <div class="mt-3">
+            <strong>Громада:</strong>
+            <span>
+                {{this.user.district}}
+            </span>
+        </div>
+        }
+
+        <div class="mt-3">
+            <strong>Дата народження:</strong>
+            <span>
+                {{this.user.dateOfBirth | date: 'longDate' }}
+            </span>
+        </div>
+        <div class="mt-3 d-flex gap-2 justify-content-start">
+            <a class="btn btn-custom" [routerLink]="['/user', this.user.id, 'profile']"><i
+                    class="fa-solid fa-eye me-1"></i>Переглянути</a>
+            @if(this.isAllowedToRemove)
+            {
+            <button class="btn btn-custom-danger" (click)="this.onRemoveUser()"><i
+                    class="fa-solid fa-trash-can me-2"></i>Прибрати</button>
+            }
+        </div>
+    </div>
+</div>

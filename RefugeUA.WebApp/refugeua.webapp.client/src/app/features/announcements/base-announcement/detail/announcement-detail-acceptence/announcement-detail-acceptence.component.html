@@ -1,0 +1,50 @@
+@if(this.announcement.isAccepted != undefined && !this.announcement.isAccepted && this.announcement.nonAcceptenceReason)
+{
+<div class="bg-custom-dark-red text-custom-light-red mb-4 p-2 rounded">
+    <h3 class="text-start text-custom-light-red">Причина відхилення</h3>
+    <div class="px-3">
+        <p class="lh-lg fw-normal text-start fs-5">{{this.announcement.nonAcceptenceReason}}</p>
+    </div>
+</div>
+}
+
+
+@if(isAuthenticated)
+{
+@if(this.authService.isAdminSubject.value || this.authService.isCommunityAdminSubject.value &&
+this.authService.userClaims.district == this.announcement.address?.district)
+{
+@if(this.announcement.isAccepted != undefined)
+{
+<div class="mb-4">
+    @if (this.announcement.isAccepted)
+    {
+    <button class="btn btn-custom-danger" (click)="this.onRejectAnnouncement()">
+        <i class="fa-solid fa-x"></i>
+        Відхилити оголошення
+    </button>
+    }
+    @else
+    {
+    <button class="btn btn-custom-green" (click)="this.onAcceptAnnouncement()">
+        <i class="fa-solid fa-check"></i>
+        Прийняти оголошення
+    </button>
+    }
+</div>
+}
+@else {
+<div class="mb-4">
+    <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+</div>
+}
+}
+
+@if(this.authService.userClaims.role == Roles.Admin || this.authService.userClaims.role == Roles.CommunityAdmin)
+{
+@if(this.announcement.isAccepted != undefined && !this.announcement.isAccepted)
+{
+<app-announcement-acceptence-reason-input [announcement]="this.announcement"></app-announcement-acceptence-reason-input>
+}
+}
+}

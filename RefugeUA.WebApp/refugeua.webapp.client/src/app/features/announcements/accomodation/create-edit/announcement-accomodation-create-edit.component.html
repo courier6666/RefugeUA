@@ -1,0 +1,414 @@
+<div class="container my-5">
+    <div class="mx-auto mw-50" style="max-width: 500px;">
+        <h3 class="text-center">
+            @if(this.currentRoute == "create"){
+            Створити оголошення про житло
+            }
+            @else {
+            Редагувати оголошення про житло
+            }
+        </h3>
+        @if((this.isAnnouncementLoaded && !this.isLoadingFailed) || this.currentRoute == "create")
+        {
+        <form [formGroup]="accomodationAnnouncementForm" class="d-flex flex-column w-100" (ngSubmit)="onSubmit()">
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="title">Заголовок *</label>
+                <input id="title" type="text" class="form-control" placeholder="Заголовок" formControlName="title" />
+                @if(title?.touched && title?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="title?.errors?.['required']" class="text-custom-light-red">Загаловок є
+                        обов’язковим.</div>
+                    <div *ngIf="title?.errors?.['maxlength']" class="text-custom-light-red">Заголовок не може
+                        бути довшим
+                        за 200
+                        символів.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="content">Опис *</label>
+                <textarea id="content" class="form-control" placeholder="Опис оголошення"
+                    formControlName="content"></textarea>
+                @if(content?.touched && content?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="content?.errors?.['required']" class="text-custom-light-red">Опис є
+                        обов’язковим.</div>
+                    <div *ngIf="content?.errors?.['maxlength']" class="text-custom-light-red">Опис не може
+                        бути довшим
+                        за 4096
+                        символів.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="buildingType">Тип будівлі *</label>
+                <select id="buildingType" class="form-control" placeholder="Тип бідувлі" formControlName="buildingType">
+                    <option [value]="null">Оберіть тип будівлі</option>
+                    @for (item of this.buildingTypes; track $index) {
+                    <option [value]="item.name">{{ item.name }}</option>
+                    }
+                </select>
+                @if(buildingType?.touched && buildingType?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="buildingType?.errors?.['required']" class="text-custom-light-red">Тип будівлі є
+                        обов’язковим.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="floors">Поверхи *</label>
+                <input id="floors" type="number" inputmode="numeric" step="1" min="1" max="60" class="form-control"
+                    placeholder="Кількість поверхів будівлі" formControlName="floors" />
+                @if(floors?.touched && floors?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="floors?.errors?.['required']" class="text-custom-light-red">Кількість поверхів є
+                        обов’язковою.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="numberOfRooms">Кількість кімнат (квартири, дому) *</label>
+                <input id="numberOfRooms" type="number" inputmode="numeric" step="1" min="1" max="30"
+                    class="form-control" placeholder="Кількість кімнат" formControlName="numberOfRooms" />
+                @if(numberOfRooms?.touched && numberOfRooms?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="numberOfRooms?.errors?.['required']" class="text-custom-light-red">Кількість кімнат є
+                        обов’язковою.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="capacity">Кількість мешканців *</label>
+                <input id="capacity" type="number" inputmode="numeric" step="1" min="1" max="100" class="form-control"
+                    placeholder="Кількість мешканців" formControlName="capacity" />
+                @if(capacity?.touched && capacity?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="capacity?.errors?.['required']" class="text-custom-light-red">Кількість мешканців є
+                        обов’язковою.</div>
+                    <div *ngIf="capacity?.errors?.['min']" class="text-custom-light-red">Кількість кімнат має бути
+                        мінімум 1.</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="areaSqMeters">Площа м²</label>
+                <input id="areaSqMeters" type="number" inputmode="numeric" step="0.1" min="5" max="1000"
+                    class="form-control" placeholder="Площа" formControlName="areaSqMeters" />
+                @if(areaSqMeters?.touched && areaSqMeters?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="areaSqMeters?.errors?.['required']" class="text-custom-light-red">Площа є
+                        обов’язковою.</div>
+                    <div *ngIf="areaSqMeters?.errors?.['min']" class="text-custom-light-red">Площа повинна становити
+                        хоча би 5 м².</div>
+                    <div *ngIf="areaSqMeters?.errors?.['max']" class="text-custom-light-red">Площа не має перевищувати
+                        1000 м².</div>
+                </div>
+                }
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="institutionName">Оплата *</label>
+                <div class="d-flex flex-align-center mb-3 mt-2 col-6">
+                    <label class="custom-checkbox-container">
+                        <input style="width: 1.25rem; height: 1.25rem;" type="checkbox" id="isFree"
+                            formControlName="isFree" />
+                        <span class="custom-checkbox"></span>
+                        <span class="mr-sm mt-2 checkbox-label">Безплатно</span>
+                    </label>
+                </div>
+                <input id="fee" class="form-control" placeholder="Вартість грн." formControlName="price">
+                @if(price?.touched && price?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="price?.errors?.['required']" class="text-custom-light-red">Оплата є
+                        обов’язковою.</div>
+                    <div *ngIf="price?.errors?.['min']" class="text-custom-light-red">Оплата повинна бути більше 0.
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div formGroupName="contactInformation">
+                <h4 class="pt-4">Контактна інформація</h4>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="phoneNumber">Номер телефону *</label>
+                    <input id="phoneNumber" type="tel" class="form-control" formControlName="phoneNumber"
+                        placeholder="+380..." />
+                    @if(phoneNumber?.touched && phoneNumber?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="phoneNumber?.errors?.['required']" class="text-custom-light-red">Номер телефону є
+                            обов’язковим.
+                        </div>
+                        <div *ngIf="phoneNumber?.errors?.['pattern']" class="text-custom-light-red">Номер телефону не
+                            віповідає правильному формату.
+                            Може починатися з +, або без нього.
+                            Перша цифра після + не може бути нулем.
+                            Має містити від 11 до 15 цифр.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="email">Електронна пошта</label>
+                    <input id="email" type="email" class="form-control" formControlName="email"
+                        placeholder="example@domain.com" />
+                    @if(email?.touched && email?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="email?.errors?.['email']" class="text-custom-light-red">Електронна пошта має
+                            відповідати
+                            відповідному формату пошти: example&#64;email.com</div>
+                        <div *ngIf="email?.errors?.['maxlength']" class="text-custom-light-red">Електронна пошта не може
+                            бути довшою
+                            за 200
+                            символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="telegram">Telegram</label>
+                    <input id="telegram" type="telegram" class="form-control" formControlName="telegram"
+                        placeholder="Telegram" />
+                    @if(telegram?.touched && telegram?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="telegram?.errors?.['maxlength']" class="text-custom-light-red">Посилання на телеграм
+                            не може перевищувати 256 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="viber">Viber</label>
+                    <input id="viber" type="viber" class="form-control" formControlName="viber" placeholder="Viber" />
+                    @if(viber?.touched && viber?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="viber?.errors?.['maxlength']" class="text-custom-light-red">Посилання на вайбер
+                            не може перевищувати 256 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="facebook">Facebook</label>
+                    <input id="facebook" type="facebook" class="form-control" formControlName="facebook"
+                        placeholder="Facebook" />
+                    @if(facebook?.touched && facebook?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="facebook?.errors?.['maxlength']" class="text-custom-light-red">Посилання на фейсбук
+                            не може перевищувати 256 символів.</div>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div formGroupName="address">
+                <h4 class="pt-4">Адреса</h4>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="country">Країна *</label>
+                    <input id="country" type="text" class="form-control" formControlName="country"
+                        placeholder="Країна" />
+                    @if(country?.touched && country?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="country?.errors?.['required']" class="text-custom-light-red">Країна є обов’язковою.
+                        </div>
+                        <div *ngIf="country?.errors?.['maxlength']" class="text-custom-light-red">Назва країни
+                            не може перевищувати 200 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="region">Область *</label>
+                    <input id="region" type="text" class="form-control" formControlName="region"
+                        placeholder="Область" />
+                    @if(region?.touched && region?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="region?.errors?.['required']" class="text-custom-light-red">Область / регіон є
+                            обов’язковим.
+                        </div>
+                        <div *ngIf="region?.errors?.['maxlength']" class="text-custom-light-red">Назва області
+                            не може перевищувати 200 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="district">Громада *</label>
+                    <input id="district" type="text" class="form-control" formControlName="district"
+                        placeholder="Громада" />
+                    @if(district?.touched && district?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="district?.errors?.['required']" class="text-custom-light-red">Громада є
+                            обов’язковою.
+                        </div>
+                        <div *ngIf="district?.errors?.['maxlength']" class="text-custom-light-red">Назва громади
+                            не може перевищувати 200 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="settlement">Населений пункт *</label>
+                    <input id="settlement" type="text" class="form-control" formControlName="settlement"
+                        placeholder="Населений пункт" />
+                    @if(settlement?.touched && settlement?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="settlement?.errors?.['required']" class="text-custom-light-red">Населений пункт є
+                            обов’язковим.
+                        </div>
+                        <div *ngIf="settlement?.errors?.['maxlength']" class="text-custom-light-red">Назва населеного
+                            пункту
+                            не може перевищувати 200 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="street">Вулиця *</label>
+                    <input id="street" type="text" class="form-control" formControlName="street" placeholder="Вулиця" />
+                    @if(street?.touched && street?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="street?.errors?.['required']" class="text-custom-light-red">Вулиця є
+                            обов’язковою.
+                        </div>
+                        <div *ngIf="street?.errors?.['maxlength']" class="text-custom-light-red">Назва вулиці
+                            пункту
+                            не може перевищувати 200 символів.</div>
+                    </div>
+                    }
+                </div>
+                <div class="form-group mt-3 text-start">
+                    <label class="h5" for="postalCode">Поштовий індекс *</label>
+                    <input id="postalCode" type="text" class="form-control" formControlName="postalCode"
+                        placeholder="Приклад: 12345" />
+                    @if(postalCode?.touched && postalCode?.errors)
+                    {
+                    <div class="form-error-display">
+                        <div *ngIf="postalCode?.errors?.['required']" class="text-custom-light-red">Поштовий індекс є
+                            обов’язковим.
+                        </div>
+                        <div *ngIf="postalCode?.errors?.['pattern']" class="text-custom-light-red">Поштовий індекс має
+                            складатися із 5 цифр.
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="form-group mt-3 text-start">
+                <label class="h5" for="image">
+                    Фото житла
+                </label>
+                <input #image type="file" accept="image/jpeg, image/jpg" class="form-control" formControlName="image"
+                    (change)="this.onFileSelected($event)" placeholder="Фото житла" hidden />
+                <button class="w-100 btn btn-custom" type="button"
+                    (click)="this.imageElement.nativeElement.click()">Вибрати файл</button>
+                @if(this.image?.touched && this.image?.errors)
+                {
+                <div class="form-error-display">
+                    <div *ngIf="this.image?.errors?.['tooManyPhotos']" class="text-custom-light-red">
+                        Дозволена максимальна кількість зображень - 6 штук.
+                    </div>
+                    <div *ngIf="this.image?.errors?.['errorLoading']" class="text-custom-light-red">
+                        Виникла помилка завантаження зображення.
+                    </div>
+                    <div *ngIf="this.image?.errors?.['imageResolution']" class="text-custom-light-red">
+                        Розмір зображення повинне бути хоча би 800x600 пікселів.
+                    </div>
+                    <div *ngIf="this.image?.errors?.['wrongFormat']" class="text-custom-light-red">
+                        Фото повинне бути у форматі .jpg або .jpeg.
+                    </div>
+                    <div *ngIf="this.image?.errors?.['imageSizeExceed']" class="text-custom-light-red">
+                        Розмір фото не має перевищувати 2 мегабайти.
+                    </div>
+                    <div *ngIf="this.image?.errors?.['aspectRatioOutOfRange']" class="text-custom-light-red">
+                        Дозволене відношення ширини до висоти фото є між 4/3 та 16/9.
+                    </div>
+                    <div *ngIf="this.image?.errors?.['imageResolution']" class="text-custom-light-red">
+                        Розмір зображення повинне бути хоча би 800x600 пікселів.
+                    </div>
+                </div>
+                }
+
+                <div *ngIf="imageFiles && imageFiles.length > 0" class="mt-2">
+                    <div class="d-flex flex-column gap-1">
+                        <ng-container *ngFor="let item of imageSrcs; let i = index">
+                            <div class="text-center">
+                                <img [src]="item" height="200px" class="mx-auto img-border" />
+                            </div>
+                            <div class="text-center">
+                                <span class="badge group-tag-item-added fs-6">
+                                    {{ imageFiles[i].name }}
+                                    <i class="fa-solid fa-xmark rounded-circle px-1 remove-image-button"
+                                        (click)="onImageRemove(i)"></i>
+                                </span>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+            </div>
+
+            @if(this.isFormSubmitted)
+            {
+            @if(resultSuccess == null) {
+            <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+            }
+            @else if(!resultSuccess) {
+            <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal form-error-display">
+                <div class="text-start fs-5">Виникла помилка під час {{(this.currentRoute == "create") ? "створення" :
+                    "редагування"}} оголошення.</div>
+                @for (item of this.submitErrorResult; track $index)
+                {
+                <div class="text-start">{{item}}</div>
+                }
+            </div>
+            }
+            @else {
+            <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal form-success-display">
+                Оголошення про житло {{(this.currentRoute == "create") ? "створене" : "редаговане"}}.
+            </div>
+            }
+            }
+            <div class="d-flex justify-content-between mt-4 gap-2 w-100">
+                <button class="btn btn-custom-green w-100" type="submit"
+                    [disabled]="accomodationAnnouncementForm.invalid || accomodationAnnouncementForm.pending || (this.isFormSubmitted && this.resultSuccess == null)">
+                    @if(this.currentRoute == "create")
+                    {
+                    Створити
+                    }
+                    @else {
+                    Редагувати
+                    }
+                </button>
+                <button class="btn btn-custom-danger w-100" type="button">Скасувати</button>
+            </div>
+        </form>
+        }
+        @else if(this.isLoadingFailed)
+        {
+        <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal fs-4 form-error-display">
+            Оголошення не було знайдено або виникла помилка завантаження оголошення! Спробуйте перезавантажити сторінку!
+        </div>
+        }
+        @else {
+        <img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+        }
+    </div>
+</div>

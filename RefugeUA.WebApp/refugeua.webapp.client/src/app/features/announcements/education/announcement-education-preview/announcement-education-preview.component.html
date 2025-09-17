@@ -1,0 +1,84 @@
+<div class="card" (click)="this.onPreviewClick()">
+    <div class="card-header m-2 d-flex justify-content-between">
+        <div class="py-2">
+            <h5 class="card-title text-custom-pale-yellow">{{ educationAnnouncement?.title }}</h5>
+            <h6 class="card-subtitle text-muted text-custom-pale-yellow">
+                {{ educationAnnouncement?.educationType }}
+                <span *ngIf="educationAnnouncement?.institutionName" class="text-custom-pale-yellow">, <strong>{{
+                        educationAnnouncement?.institutionName }}</strong></span>
+            </h6>
+        </div>
+        <div class="py-2 d-flex mw-50 gap-1 flex-wrap justify-content-end">
+            @for (item of this.educationAnnouncement?.targetGroups; track item) {
+            <div>
+                <span class="badge float-end bg-custom-dark text-custom-yellow">
+                    {{ item }}
+                </span>
+            </div>
+            }
+        </div>
+    </div>
+    <div class="ms-4 pt-0 pb-2">
+        @if(!this.educationAnnouncement?.isClosed)
+        {
+        <span class="badge float-start bg-custom-pale-green text-custom-lightest mt-0 fs-5">
+            Відкрите
+        </span>
+        }
+        @else {
+        <span class="badge float-start bg-custom-dark-red text-custom-light-red mt-0 fs-5">
+            Закрите
+        </span>
+        }
+    </div>
+    <div class="mx-4 card-header-underline"></div>
+    <div class="card-body m-2">
+        <p class="card-text">{{ shortContent }}</p>
+        <div>
+            <strong>Ціна навчання: </strong>
+            @if(!educationAnnouncement?.fee){
+            <span>
+                Безплатно
+            </span>
+            }
+            @else {
+            <span>
+                {{ educationAnnouncement?.fee }} UAH
+            </span>
+            }
+        </div>
+        <div class="mt-3">
+            <strong>Тривалість: </strong>
+            <span>{{educationAnnouncement?.duration }} днів</span>
+        </div>
+
+        @if(this.educationAnnouncement?.address != null)
+        {
+        <div class="mt-3">
+            <strong>Адреса:</strong>
+            <app-address [address]="this.educationAnnouncement?.address"></app-address>
+        </div>
+
+        }
+
+        <div class="mt-3">
+            <p class="mb-1">Дата розміщення: {{ educationAnnouncement?.createdAt | date: 'mediumDate' }}</p>
+        </div>
+        @if(this.educationAnnouncement?.announcementGroups && this.educationAnnouncement?.announcementGroups!.length >
+        0)
+        {
+        <div class="mt-3 card-header-underline"></div>
+        <div class="mt-3 d-flex justify-content-start flex-wrap flex-row gap-2">
+            @for (item of this.educationAnnouncement?.announcementGroups; track $index) {
+            <div>
+                <span class="badge float-end bg-custom-dark text-custom-yellow">
+                    {{ item.name }}
+                </span>
+            </div>
+            }
+        </div>
+        }
+    </div>
+
+
+</div>

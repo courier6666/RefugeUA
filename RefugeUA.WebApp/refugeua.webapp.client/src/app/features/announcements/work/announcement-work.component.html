@@ -1,0 +1,123 @@
+<div class="row m-2">
+    <app-search-bar class="mb-4" placeholder="Посада, заголовок..."
+        [onSearchBarSearch]="this.getOnSearchBarCallback()"></app-search-bar>
+    @if(this.authService.authSubject.value && this.authService.userClaims.role != Roles.MilitaryOrFamily)
+    {
+    <div class="mb-4">
+        <a routerLink="create" class="btn btn-custom-green"><strong>Створити оголошення про роботу</strong></a>
+    </div>
+    }
+    <div class="col-3">
+        <form [formGroup]="announcementWorkSearchForm" class="d-flex flex-column w-100">
+            <div class="form-group text-start">
+                <label class="h5">Громада</label>
+                <ul class="list-unstyled my-0 mx-2">
+                    <li class="no-style d-flex flex-align-center mb-0 mt-2 gap-2">
+                        <input type="text" class="form-control" placeholder="Громада" formControlName="district" />
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group mt-2 text-start position-relative">
+                <label class="h5">Група оголошень</label>
+                <ul class="list-unstyled my-0 mx-2">
+                    <li class="no-style d-flex flex-align-center mb-0 mt-2 gap-2">
+                        <input type="text" class="form-control" placeholder="Група оголошень" (focus)="this.onGroupsControlFocus()"
+                            (blur)="this.onGroupsControlBlur()"
+                            formControlName="announcementGroup" />
+                    </li>
+                </ul>
+                <div #groupsDropdown class="position-relative mx-2" style="z-index: 20;" style="display: none;" id="groupsDropdown">
+                    <div class="position-absolute bg-custom-darker w-100 scroll" style="max-height: 400px;z-index: 20; overflow-y:scroll;">
+                        @for (item of this.displayedGroups; track $index) {
+                            <div class="p-2 dropdown-list-item" (mousedown)="this.onAnnouncementGroupChosen(item.name)">{{item.name}}</div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-2 text-start">
+                <label class="h5">Зарплата</label>
+                <ul class="list-unstyled my-0 mx-2">
+                    <li class="no-style d-flex flex-align-center mb-0 mt-2 gap-2">
+                        <span class="mr-sm mt-2 option-nav-label">від</span>
+                        <select class="form-control" formControlName="salaryLower">
+                            <option [ngValue]="null">будь-яка</option>
+                            @for (item of this.currentlyAvailableSalaryOptionsLower; track $index)
+                            {
+                            <option [ngValue]="item.value">{{item.label}}</option>
+                            }
+                        </select>
+                    </li>
+                    <li class="no-style d-flex flex-align-center mb-0 mt-2 gap-2">
+                        <span class="mr-sm mt-2 option-nav-label">до</span>
+                        <select class="form-control" formControlName="salaryUpper">
+                            <option [ngValue]="null">будь-яка</option>
+                            @for (item of this.currentlyAvailableSalaryOptionsUpper; track $index)
+                            {
+                            <option [ngValue]="item.value">{{item.label}}</option>
+                            }
+                        </select>
+                    </li>
+                    <li class="no-style d-flex flex-align-center mb-0 mt-2 gap-2">
+                        <label class="custom-checkbox-container">
+                            <input readonly style="width: 1.25rem; height: 1.25rem;" type="checkbox"
+                                formControlName="salaryNotSet" [checked]="announcementWorkSearchForm.value.salaryNotSet"
+                                class="mt-2" />
+                            <span class="custom-checkbox"></span>
+                            <span class="mr-sm mt-2 checkbox-label">Не вказана</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group mt-2 text-start">
+                <label class="h5">Категорії</label>
+                <ul class="list-unstyled my-0 mx-2">
+                    @if(this.displayedCategories.length > 0)
+                    {
+                    @for(item of ((this.isDisplayedFull) ? this.displayedCategories : this.displayedCategories.slice(0,
+                    Math.max(this.displayedCountMin, this.selectedCategories.value.length))); track item.id)
+                    {
+                    <li class="no-style d-flex flex-align-center mb-0 mt-2">
+                        <label class="custom-checkbox-container">
+                            <input style="width: 1.25rem; height: 1.25rem;" type="checkbox" [value]="item.id"
+                                [checked]="this.isCategorySelected(item.id!)" (change)="this.onCheckboxChange($event)"
+                                class="mt-2" />
+                            <span class="custom-checkbox"></span>
+                            <span class="mr-sm mt-2 checkbox-label">{{item.name}}</span>
+                        </label>
+                    </li>
+                    }
+                    }
+                    @else {
+                    <img src="assets/gif/loading.gif" width="50em" style="margin-left: auto; margin-right: auto;">
+                    }
+                </ul>
+                @if(!this.isDisplayedFull && this.selectedCategories.length != this.displayedCategories.length)
+                {
+                <button (click)="onAllCategoriesButtonClick()" class="btn btn-custom mt-2">
+                    Усі категорії
+                    <i class="fa-solid fa-chevron-down ms-1"></i>
+                </button>
+                }
+            </div>
+        </form>
+    </div>
+    <div class="col-9 d-flex flex-column gap-4 mt-1">
+        @if(this.announcementsLoaded)
+        {
+        @if(!this.announcementsFound)
+        {
+        <span class="error-display">Не було знайдено оголошення!</span>
+        }
+        @else {
+        @for (item of this.currentWorkAnnouncements; track $index) {
+        <app-announcement-work-preview [workAnnouncement]="item"></app-announcement-work-preview>
+        }
+        <app-paging-navigation [pagesCount]="this.pages" [onNavigationCallback]="getNavigationCallback()"
+            [currentPage]="this.currentPage"></app-paging-navigation>
+        }
+        }
+        @else {
+        <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+        }
+    </div>
+</div>

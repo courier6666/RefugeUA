@@ -1,0 +1,125 @@
+@if(this.announcement)
+{
+<div class="container">
+    <h3>Групи оголошення '{{this.announcement.title}}'</h3>
+    <div class="row p-4" style="height: 700px;">
+        <div class="col-5">
+            <h4 class="text-start">Поточні групи</h4>
+
+            <div class="p-4 bg-custom-much-darker h-100 rounded">
+                @if(this.addedGroupsLoadedStatus)
+                {
+                <div class="d-flex text-start flex-column gap-2 justify-content-start scroll scroll-groups-panel h-100">
+                    @for (item of this.currentAddedGroups; track $index) {
+                    <div>
+                        <span class="badge group-tag-item-added fs-6">{{item.name}} <i
+                                class="fa-solid fa-xmark group-tag-remove-button rounded-circle px-1"
+                                (click)="this.onGroupRemove(item.id!)"></i></span>
+                    </div>
+                    }
+                </div>
+                }
+                @else if(this.addedGroupsLoadedStatus == undefined)
+                {
+                <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+                }
+                @else {
+                <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal fs-4 error-display">
+                    Виникла помилка під час завантаження поточних груп!
+                </div>
+                }
+            </div>
+
+        </div>
+        <div class="col-7">
+            <div class="p-4 pt-2 bg-custom-much-darker rounded h-100 d-flex flex-column" style="margin-top: 2.3rem;">
+                <div class="d-flex flex-column" style="height: 70%">
+                    <h4 class="text-start">Групи на вибір</h4>
+                    <div class="p-4 bg-custom-darker rounded mb-2 h-100 scroll scroll-groups-panel">
+                        <div>
+                        @if(this.toAddGroupsLoadedStatus)
+                        {
+                        <div
+                            class="d-flex flex-row gap-2 justify-content-start flex-wrap align-items-start mh-100">
+                            @for (item of this.currentToAddGroups; track $index) {
+                                <span class="badge group-tag-item fs-6"
+                                    (click)="this.onGroupAdd(item.id!)">{{item.name}}</span>
+                            }
+                        </div>
+                        }
+                        @else if(this.toAddGroupsLoadedStatus == undefined)
+                        {
+                        <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+                        }
+                        @else {
+                        <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal fs-4 error-display">
+                            Виникла помилка під час завантаження груп на вибір!
+                        </div>
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-start">Створити групу</h4>
+                    <form [formGroup]="this.createAnnouncementGroupFrom" class="d-flex flex-column w-100"
+                        (ngSubmit)="this.onGroupCreate()">
+                        <div class="form-group mt-2 text-start">
+                            <label class="h5" for="name">Назва групи *</label>
+                            <input id="name" type="text" class="form-control" placeholder="До 100 символів"
+                                formControlName="name" />
+                            @if(createName?.touched && createName?.errors)
+                            {
+                            <div class="form-error-display">
+                                <div *ngIf="createName?.errors?.['maxlength']" class="text-custom-light-red">Заголовок
+                                    не
+                                    може
+                                    бути довшим
+                                    за 100
+                                    символів.</div>
+                                <div *ngIf="createName?.errors?.['groupMustNotExist']" class="text-custom-light-red">Група з такою назвою вже існує.</div>
+                            </div>
+                            }
+                        </div>
+
+                        @if(this.isCreateFormSubmitted)
+                        {
+                        @if(this.createGroupStatusSuccess == null) {
+                        <img src="assets/gif/loading.gif" width="75em" style="margin-left: auto; margin-right: auto;">
+                        }
+                        @else if(!this.createGroupStatusSuccess) {
+                        <div class="bg-custom-dark-red text-custom-light-red p-3 fw-normal form-error-display">
+                            Виникла помилка під час створення групи.
+                        </div>
+                        }
+                        @else {
+                        <div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal form-success-display">
+                            Групу оголошення створено.
+                        </div>
+                        }
+                        }
+
+                        <div class="d-flex justify-content-between mt-4 gap-2 w-100">
+                            <button class="btn btn-custom-green w-100" type="submit"
+                                [disabled]="this.createAnnouncementGroupFrom.invalid || this.createAnnouncementGroupFrom.pending || (this.isCreateFormSubmitted && this.createGroupStatusSuccess == null)">
+                                Створити
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@else {
+@if(announcementLoadedSuccess)
+{
+<div class="bg-custom-pale-green text-custom-lightest p-3 fw-normal fs-4 form-error-display">
+    Виникла помилка під час завантаження оголошення або оголошення не було знайдено!
+</div>
+}
+@else{
+<img src="assets/gif/loading.gif" width="100em" style="margin-left: auto; margin-right: auto;">
+}
+}
+<div class="mb-5"></div>
