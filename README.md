@@ -174,3 +174,37 @@ The system includes a dedicated file service that:
 - rxjs
 
 ---
+
+## Getting Started
+
+### Prerequisites
+- [.NET 8 SDK](https://dotnet.microsoft.com/)
+- [Node.js & npm](https://nodejs.org/)
+- [MS SQL Server](https://www.microsoft.com/sql-server)
+
+### Installation
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/<your-username>/refugeua.git
+   cd refugeua
+   ```
+2. **Configure the database:**
+   Update the connection string in the backend configuration and apply migrations:
+   ```bash
+   dotnet ef database update
+   ```
+3. **Run the backend:**
+   ```bash
+   cd backend
+   dotnet run
+   ```
+4. **Run the frontend:**
+   ```bash
+   cd frontend
+   npm install
+   npm start
+   ```
+
+### Access the Application
+- Backend API: `https://localhost:<port>`
+- Frontend UI: `http://localhost:4200`
