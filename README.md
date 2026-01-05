@@ -208,3 +208,69 @@ The system includes a dedicated file service that:
 ### Access the Application
 - Backend API: `https://localhost:<port>`
 - Frontend UI: `http://localhost:4200`
+
+## UI
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/MainPage.jpg?raw=true" alt="Main Page" width="900"/>
+</p>
+<p align="center">Main Page</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/PageAdvertsSearch.jpg?raw=true" alt="Search Adverts" width="900"/>
+</p>
+<p align="center">Search Adverts</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/PageAdvert1.jpg?raw=true" alt="Advert Page 1" width="900"/>
+</p>
+<p align="center">Advert Page 1</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/PageAdvert2.jpg?raw=true" alt="Advert Page 2" width="900"/>
+</p>
+<p align="center">Advert Page 2</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/AdvertResponseForm.jpg?raw=true" alt="Advert Response Form" width="900"/>
+</p>
+<p align="center">Advert Response Form</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/OwnResponsesViewPage.jpg?raw=true" alt="User Responses Page" width="900"/>
+</p>
+<p align="center">User Responses Page</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/PageViewPsychologicalHelp1.jpg?raw=true" alt="Psychological Help Page" width="900"/>
+</p>
+<p align="center">Psychological Help Page</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/PageViewPsychologicalHelp2.jpg?raw=true" alt="Psychological Help Details" width="900"/>
+</p>
+<p align="center">Psychological Help Details</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/PageVolunteerEvent1.jpg?raw=true" alt="Volunteer Event Page" width="900"/>
+</p>
+<p align="center">Volunteer Event Page</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/PageVolunteerEvent2.jpg?raw=true" alt="Volunteer Event Details" width="900"/>
+</p>
+<p align="center">Volunteer Event Details</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/PageVolunteerEvents.jpg?raw=true" alt="Volunteer Events List" width="900"/>
+</p>
+<p align="center">Volunteer Events List</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/PageVolunteerGroup1.jpg?raw=true" alt="Volunteer Group Page" width="900"/>
+</p>
+<p align="center">Volunteer Group Page</p>
+
+<p align="center">
+  <img src="https://github.com/courier6666/RefugeUA/blob/main/images/PageVolunteerGroup2.jpg?raw=true" alt="Volunteer Group Details" width="900"/>
+</p>
+<p align="center">Volunteer Group Details</p>
