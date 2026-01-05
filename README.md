@@ -67,16 +67,16 @@ The system consists of:
                 │
                 ▼
 ┌──────────────────────────────────────────┐
-│          Server (ASP.NET Core)            │
+│          Server (ASP.NET Core)           │
 │                                          │
-│  • API Endpoints (Controllers)            │
+│  • API Endpoints (Controllers)           │
 │  • Authentication & Authorization (JWT)  │
-│  • Validation (FluentValidation)          │
-│  • File Management Service                │
+│  • Validation (FluentValidation)         │
+│  • File Management Service               │
 │                                          │
-│  Application Layer (Vertical Slices)      │
-│  • Commands / Queries                     │
-│  • Feature Handlers                       │
+│  Application Layer (Vertical Slices)     │
+│  • Commands / Queries                    │
+│  • Feature Handlers                      │
 │  • DTOs                                  │
 │                                          │
 │  Infrastructure Layer                    │
@@ -86,7 +86,7 @@ The system consists of:
                 │
                 ▼
 ┌──────────────────────────────────────────┐
-│        Database (MS SQL Server)           │
+│        Database (MS SQL Server)          │
 │                                          │
 │  • Users & Roles                         │
 │  • Advertisements                        │
@@ -95,7 +95,7 @@ The system consists of:
 └──────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────┐
-│     Static Files / wwwroot                │
+│     Static Files / wwwroot               │
 │  • Uploaded images                       │
 │  • Documents                             │
 └──────────────────────────────────────────┘
